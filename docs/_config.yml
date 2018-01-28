@@ -1,0 +1,9 @@
+theme: jekyll-theme-minimal
+title: "Ångström"
+description: "A Python package for basic molecular operations with low-dependency and easy-integration."
+show_downloads: True
+navigation:
+  - title: KBS - Home
+    url: http://kbsezginel.github.io
+  - title: Ångström
+    url: /
