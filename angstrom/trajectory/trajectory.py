@@ -2,6 +2,7 @@
 --- Ångström ---
 Read, manipulate and analyze molecular trajectory files.
 """
+from .read import read_xyz_traj
 import numpy as np
 
 
@@ -30,3 +31,13 @@ class Trajectory:
         Returns number of frames.
         """
         return len(self.atoms)
+
+    def read(self, filename):
+        """
+        Read xyz formatted trajectory file.
+
+        Args:
+            - filename (str): Trajectory file name.
+        """
+        traj = read_xyz_traj(filename)
+        self.atoms, self.coordinates, self.headers = traj['atoms'], traj['coordinates'], traj['headers']
