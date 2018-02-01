@@ -20,13 +20,13 @@ def read_xyz_traj(filename):
         traj = traj_file.readlines()
     n_atoms = int(traj[0].strip())                # Get number of atoms from first line
     n_frames = int(len(traj) / (n_atoms + 2))     # Calculate number of frames (assuming n_atoms is constant)
-    trajectory = {'atoms': np.empty((n_frames, n_atoms), dtype=str),
-                  'coordinates': np.empty((n_frames, n_atoms, 3)),
-                  'headers': np.empty((n_frames,), dtype=str)}
+    trajectory = {'atoms': np.empty((n_frames, n_atoms), dtype='U2'),  # String of length 2
+                  'coordinates': np.empty((n_frames, n_atoms, 3)),     # Float
+                  'headers': np.empty((n_frames,), dtype=object)}      # Python object
     for frame in range(n_frames):
         start = frame * (n_atoms + 2)             # Frame start
         end = (frame + 1) * (n_atoms + 2)         # Frame end
         trajectory['coordinates'][frame] = [[float(i) for i in line.split()[1:4]] for line in traj[start + 2:end]]
         trajectory['atoms'][frame] = [line.split()[0] for line in traj[start + 2:end]]
-        trajectory['headers'][frame] = (traj[start + 1].strip().split()[2])
+        trajectory['headers'][frame] = (traj[start + 1].strip())
     return trajectory
