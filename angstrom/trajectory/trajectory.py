@@ -3,6 +3,7 @@
 Read, manipulate and analyze molecular trajectory files.
 """
 from .read import read_xyz_traj
+from .write import write_xyz_traj
 import numpy as np
 
 
@@ -41,3 +42,16 @@ class Trajectory:
         """
         traj = read_xyz_traj(filename)
         self.atoms, self.coordinates, self.headers = traj['atoms'], traj['coordinates'], traj['headers']
+
+    def write(self, filename):
+        """
+        Write xyz formatted trajectory file.
+
+        Args:
+            -filename (str): Trajectory file name.
+        """
+        with open(filename, 'w') as traj_file:
+            if hasattr(self, 'headers'):
+                write_xyz_traj(traj_file, self.atoms, self.coordinates, headers=self.headers)
+            else:
+                write_xyz_traj(traj_file, self.atoms, self.coordinates)
