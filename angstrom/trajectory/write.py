@@ -19,7 +19,7 @@ def write_xyz_traj(fileobj, atoms, coordinates, headers=None):
     n_frames = len(atoms)  # Maybe check if n_frames is same for all???
     if headers is None:
         headers = ['angstrom - %i' % i for i in range(n_frames)]
-    xyz_format = '%s %.4f %.4f %.4f\n'
+    xyz_format = '%-2s %7.4f %7.4f %7.4f\n'
     for frame_atoms, frame_coors, frame_header in zip(atoms, coordinates, headers):
         fileobj.write('%i\n' % len(frame_atoms))
         fileobj.write('%s\n' % frame_header)
