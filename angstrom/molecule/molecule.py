@@ -1,6 +1,8 @@
 """
 Molecule class for Ångström Python package.
 """
+import os
+from .read import read_xyz
 
 
 class Molecule:
@@ -21,4 +23,16 @@ class Molecule:
 
     def __repr__(self):
         """ Molecule class return """
-        return "<Molecule object %s with: %s atoms>" % (self.name, len(self.atoms))
+        return "<Molecule object [%s] with: %s atoms>" % (self.name, len(self.atoms))
+
+    def read(self, filename):
+        """ Read molecule file
+        Args:
+            - filename (str): xyz file name
+
+        Returns:
+            - Assigns 'coordinates', 'atoms', and 'header', and 'name' variables.
+        """
+        self.name = os.path.splitext(os.path.basename(filename))[0]
+        mol = read_xyz(filename)
+        self.atoms, self.coordinates, self.header = mol['atoms'], mol['coordinates'], mol['header']
