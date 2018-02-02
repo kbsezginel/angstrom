@@ -1,9 +1,10 @@
 """
+--- Ångström ---
 Methods for writing chemical file formats.
 """
 
 
-def write_xyz(fileobj, atoms, coordinates, header='mol'):
+def write_xyz(fileobj, atoms, coordinates, header='angstrom'):
     """ Write given atomic coordinates to file object in xyz format
 
     Args:
@@ -16,7 +17,7 @@ def write_xyz(fileobj, atoms, coordinates, header='mol'):
     """
     fileobj.write(str(len(coordinates)) + '\n')
     fileobj.write(header + '\n')
-    format = '%s %.4f %.4f %.4f\n'
+    xyz_format = '%-2s %7.4f %7.4f %7.4f\n'
     for atom, coor in zip(atoms, coordinates):
-        fileobj.write(format % (atom, coor[0], coor[1], coor[2]))
+        fileobj.write(xyz_format % (atom, coor[0], coor[1], coor[2]))
     fileobj.flush()

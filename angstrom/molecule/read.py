@@ -1,5 +1,6 @@
 """
-Method for reading chemical file formats.
+--- Ångström ---
+Methods for reading chemical file formats.
 """
 import numpy as np
 

@@ -1,8 +1,10 @@
 """
+--- Ångström ---
 Molecule class for Ångström Python package.
 """
 import os
 from .read import read_xyz
+from .write import write_xyz
 
 
 class Molecule:
@@ -36,3 +38,17 @@ class Molecule:
         self.name = os.path.splitext(os.path.basename(filename))[0]
         mol = read_xyz(filename)
         self.atoms, self.coordinates, self.header = mol['atoms'], mol['coordinates'], mol['header']
+
+    def write(self, filename):
+        """ Write molecule file
+        Args:
+            - filename (str): xyz file name
+
+        Returns:
+            - Writes xyz formatted molecule information to given file name.
+        """
+        with open(filename, 'w') as xyz_file:
+            if hasattr(self, 'header'):
+                write_xyz(xyz_file, self.atoms, self.coordinates, self.header)
+            else:
+                write_xyz(xyz_file, self.atoms, self.coordinates)
