@@ -5,6 +5,7 @@ Molecule class for Ångström Python package.
 import os
 from .read import read_xyz
 from .write import write_xyz
+from angstrom.geometry import get_molecule_center
 
 
 class Molecule:
@@ -52,3 +53,13 @@ class Molecule:
                 write_xyz(xyz_file, self.atoms, self.coordinates, self.header)
             else:
                 write_xyz(xyz_file, self.atoms, self.coordinates)
+
+    def get_center(self, mass=True):
+        """ Get coordinates for molecule center.
+        Args:
+            - mass (bool): Calculate center of mass (True) or geometric center (False)
+
+        Returns:
+            - ndarray: Molecule center coordinates.
+        """
+        return get_molecule_center(self.atoms, self.coordinates, mass=mass)
