@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/kbsezginel/angstrom.svg?branch=master)](https://travis-ci.org/kbsezginel/angstrom)
+[![codecov](https://codecov.io/gh/kbsezginel/angstrom/branch/master/graph/badge.svg)](https://codecov.io/gh/kbsezginel/angstrom)
+
+
 # Ångström
 A Python package for basic molecular operations with low-dependency and easy-integration.
 
