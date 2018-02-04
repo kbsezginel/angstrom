@@ -1,0 +1,29 @@
+language: python
+
+# Run jobs on container-based infrastructure, can be overridden per job
+sudo: false
+
+python:
+  - "3.5"
+
+before_install:
+  - uname -a
+  - free -m
+  - df -h
+  - ulimit -a
+
+install:
+  - pip install pytest pytest-cov codecov
+
+before_script:
+  - python -V
+
+script:
+  - python setup.py install
+  - py.test --cov=./
+
+after_success:
+  - codecov
+
+notifications:
+  email: false
