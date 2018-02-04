@@ -4,6 +4,7 @@ Read, manipulate and analyze molecular trajectory files.
 """
 from .read import read_xyz_traj
 from .write import write_xyz_traj
+from angstrom.geometry import get_molecule_center
 import numpy as np
 
 
@@ -55,3 +56,16 @@ class Trajectory:
                 write_xyz_traj(traj_file, self.atoms, self.coordinates, headers=self.headers)
             else:
                 write_xyz_traj(traj_file, self.atoms, self.coordinates)
+
+    def get_center(self, mass=True):
+        """ Get coordinates of molecule center at each frame.
+        Args:
+            - mass (bool): Calculate center of mass (True) or geometric center (False)
+
+        Returns:
+            - ndarray: Molecule center coordinates for each frame.
+        """
+        centers = np.empty((len(self.atoms), 3))
+        for f, (frame_atoms, frame_coors) in enumerate(zip(self.atoms, self.coordinates)):
+            centers[f] = get_molecule_center(frame_atoms, frame_coors, mass=mass)
+        return centers
