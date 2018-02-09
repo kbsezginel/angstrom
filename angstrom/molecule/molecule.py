@@ -63,3 +63,11 @@ class Molecule:
             - ndarray: Molecule center coordinates.
         """
         return get_molecule_center(self.atoms, self.coordinates, mass=mass)
+
+    def translate(self, vector):
+        """ Translate molecule by given vector.
+
+        Args:
+            - vector (ndarray): Translation vector
+        """
+        self.coordinates += vector
