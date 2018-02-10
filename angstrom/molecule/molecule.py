@@ -31,7 +31,7 @@ class Molecule:
         return "<Molecule object [%s] with: %s atoms>" % (self.name, len(self.atoms))
 
     def __add__(self, mol):
-        """ """
+        """ Molecule addition for joining the coordinates and elements into a new molecule object. """
         new_mol = Molecule(atoms=np.append(self.atoms, mol.atoms),
                            coordinates=np.append(self.coordinates, mol.coordinates, axis=0))
         new_mol.name = '%s+%s' % (self.name, mol.name)

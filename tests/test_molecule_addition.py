@@ -10,7 +10,7 @@ benzene_xyz = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'benzene.
 
 
 def test_benzene_addition():
-    """Tests molecule center for benzene"""
+    """Tests molecular addition of two benzenes"""
     benzene = Molecule(read=benzene_xyz)
     benzene2 = benzene + benzene
     assert len(benzene2.atoms) == 2 * len(benzene.atoms)
