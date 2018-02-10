@@ -30,6 +30,13 @@ class Molecule:
         """ Molecule class return """
         return "<Molecule object [%s] with: %s atoms>" % (self.name, len(self.atoms))
 
+    def __add__(self, mol):
+        """ """
+        new_mol = Molecule(atoms=np.append(self.atoms, mol.atoms),
+                           coordinates=np.append(self.coordinates, mol.coordinates, axis=0))
+        new_mol.name = '%s+%s' % (self.name, mol.name)
+        return new_mol
+
     def read(self, filename):
         """ Read molecule file.
 
