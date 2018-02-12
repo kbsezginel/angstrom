@@ -5,7 +5,7 @@ Tests calculating mean squared displacement for a trajectory.
 from angstrom import Trajectory
 import os
 
-benzene_traj_x = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'benzene-traj-x.xyz')
+benzene_traj_x = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'benzene-traj-nonp-x.xyz')
 
 
 def test_trajectory_msd_of_benzene_moving_linearly_in_x():

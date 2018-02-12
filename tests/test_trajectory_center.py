@@ -7,7 +7,7 @@ from angstrom.geometry import get_molecule_center
 import numpy as np
 import os
 
-benzene_traj_x = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'benzene-traj-x.xyz')
+benzene_traj_x = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'benzene-traj-nonp-x.xyz')
 
 
 def test_trajectory_center_of_benzene_moving_linearly_in_x():
