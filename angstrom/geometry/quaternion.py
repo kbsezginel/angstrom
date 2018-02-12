@@ -70,6 +70,7 @@ class Quaternion(object):
     def rotation(self, rotation_point, axis_point1, axis_point2, rotation_angle):
         """
         Rotation of a point around an axis defined by two points in 3D space.
+        The direction of rotation is counter-clockwise given that axis is defined as p2 - p1.
         Rotation angle needs to be given in radians.
 
         Example usage::
