@@ -106,3 +106,8 @@ class Molecule:
         """
         Q = Quaternion([0, 1, 1, 1])
         self.coordinates = np.array([Q.rotation(coor, axis_point1, axis_point2, angle).np() for coor in self.coordinates])
+
+    def align(self, mol_vector, align_vector, translate=[0, 0, 0]):
+        """ Align linker to given vector and translate """
+        alignment = align_vectors(mol_vector, align_vector)
+        self.rotate([0, 0, 0], alignment['axis'], alignment['angle'])
