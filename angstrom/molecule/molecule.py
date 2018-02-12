@@ -15,7 +15,7 @@ class Molecule:
     Molecule class.
     """
     def __init__(self, atoms=None, coordinates=None, read=None):
-        """ Molecule class initialization """
+        """ Molecule class initialization. """
         self.name = 'Molecule'
         if atoms is not None and coordinates is not None:
             self.atoms = atoms
@@ -27,7 +27,7 @@ class Molecule:
             self.coordinates = []
 
     def __repr__(self):
-        """ Molecule class return """
+        """ Molecule class return. """
         return "<Molecule object [%s] with: %s atoms>" % (self.name, len(self.atoms))
 
     def __add__(self, mol):
@@ -77,7 +77,12 @@ class Molecule:
         return get_molecule_center(self.atoms, self.coordinates, mass=mass)
 
     def center(self, coor=[0, 0, 0], mass=True):
-        """ Move linker to given coordinates using it's center """
+        """ Move linker to given coordinates using it's center
+
+        Args:
+            - coor (ndarray): Destination coordinate of the molecule
+            - mass (bool): Use atomic mass for calculating the center (default: True)
+        """
         current_center = self.get_center()
         center_vector = np.array(coor) - current_center
         self.translate(center_vector)
@@ -94,11 +99,15 @@ class Molecule:
         """ Rotate molecule around an axis defined by two point by a given angle in degrees.
         The direction of rotation is counter-clockwise given that axis is defined as p2 - p1.
         To reverse direction you can multiply angle with -1 or reverse axis points.
+        To rotate molecule on it's local axis use center=True.
+        This will prevent the molecule from moving after rotation.
 
         Args:
             - axis_point1 (ndarray): 3D coordinates for the first point that defines axis of rotation
             - axis_point2 (ndarray): 3D coordinates for the second point that defines axis of rotation
             - angle (float): Degree of rotation (radians)
+            - center (bool): Keep the molecule at the same position after rotation (default: False)
+            - mass (bool): Use atomic mass for calculating the center (default: True)
 
         Example (rotate around y-axis by 90 degrees):
             >>> molecule.rotate([0, 0, 0], [0, 1, 0], np.pi)
@@ -111,7 +120,14 @@ class Molecule:
         if center:
             self.center(current_center, mass=mass)
 
-    def align(self, mol_vector, align_vector, center=False):
-        """ Align linker to given vector and translate """
+    def align(self, mol_vector, align_vector, center=False, mass=True):
+        """ Align molecule to given vector using molecule vector.
+
+        Args:
+            - mol_vector (ndarray): Molecule vector to be aligned
+            - align_vector (ndarray): Target vector to align the molecule
+            - center (bool): Keep the molecule at the same position after alignment (default: False)
+            - mass (bool): Use atomic mass for calculating the center (default: True)
+        """
         alignment = align_vectors(mol_vector, align_vector)
-        self.rotate([0, 0, 0], alignment['axis'], alignment['angle'], center=center)
+        self.rotate([0, 0, 0], alignment['axis'], alignment['angle'], center=center, mass=mass)
