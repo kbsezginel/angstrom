@@ -4,6 +4,7 @@ Read, manipulate and analyze molecular trajectory files.
 """
 from .read import read_xyz_traj
 from .write import write_xyz_traj
+from .tools import non_periodic_coordinates
 from angstrom.geometry import get_molecule_center
 import numpy as np
 
@@ -88,3 +89,15 @@ class Trajectory:
         """
         ref_coor = coordinates[reference]
         return np.average(np.power((coordinates - ref_coor), 2))
+
+    def non_periodic_coordinates(self, simulation_box):
+        """Convert periodic simulation coordinates to non-periodic coordinates.
+        *** ORTHORHOMBIC CELLS ONLY ***
+
+        Args:
+            - simulation_box (list): Dimensions of the simulation box: [a, b, c]
+
+        Returns:
+            - ndarray: 3D list of non-periodic coordinates
+        """
+        return non_periodic_coordinates(self.coordinates, simulation_box)
