@@ -4,7 +4,7 @@ Molecule class for Ångström Python package.
 """
 from .read import read_xyz
 from .write import write_xyz
-from angstrom.geometry import get_molecule_center
+from angstrom.geometry import get_molecule_center, align_vectors
 from angstrom.geometry.quaternion import Quaternion
 import os
 import numpy as np
@@ -92,11 +92,11 @@ class Molecule:
         Args:
             - axis_point1 (ndarray): 3D coordinates for the first point that defines axis of rotation
             - axis_point2 (ndarray): 3D coordinates for the second point that defines axis of rotation
-            - angle (float): Degree of rotation (angles)
+            - angle (float): Degree of rotation (radians)
 
         Example (rotate around y-axis by 90 degrees):
-            >>> molecule.rotate([0, 0, 0], [0, 1, 0], 90)
+            >>> molecule.rotate([0, 0, 0], [0, 1, 0], np.pi)
         This would rotate the molecule around y-axis by 90 degrees counter-clockwise.
         """
         Q = Quaternion([0, 1, 1, 1])
-        self.coordinates = np.array([Q.rotation(coor, axis_point1, axis_point2, np.radians(angle)).np() for coor in self.coordinates])
+        self.coordinates = np.array([Q.rotation(coor, axis_point1, axis_point2, angle).np() for coor in self.coordinates])

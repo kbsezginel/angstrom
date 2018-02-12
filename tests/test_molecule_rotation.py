@@ -11,7 +11,7 @@ def test_single_point_90_degrees_rotation():
     mol = Molecule()
     mol.atoms = ['C'] * 2
     mol.coordinates = np.array([[1, 0, 0], [0, 1, 0]])
-    mol.rotate([0, 0, 0], [0, 0, 1], 90)
+    mol.rotate([0, 0, 0], [0, 0, 1], np.pi / 2)
     assert np.allclose(mol.coordinates, [[0, 1, 0], [-1, 0, 0]])
-    mol.rotate([0, 0, 0], [0, 0, 1], 180)
+    mol.rotate([0, 0, 0], [0, 0, 1], np.pi)
     assert np.allclose(mol.coordinates, [[0, -1, 0], [1, 0, 0]])
