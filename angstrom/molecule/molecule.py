@@ -76,6 +76,12 @@ class Molecule:
         """
         return get_molecule_center(self.atoms, self.coordinates, mass=mass)
 
+    def center(self, coor=[0, 0, 0], mass=True):
+        """ Move linker to given coordinates using it's center """
+        current_center = self.get_center()
+        center_vector = np.array(coor) - current_center
+        self.translate(center_vector)
+
     def translate(self, vector):
         """ Translate molecule by given vector.
 
