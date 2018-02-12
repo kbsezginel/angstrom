@@ -2,6 +2,7 @@
 --- Ångström ---
 Geometric operations for Ångström Python package.
 """
+import warnings
 import numpy as np
 import periodictable
 
@@ -26,3 +27,26 @@ def get_molecule_center(atoms, coordinates, mass=True):
     y_cm = (masses * coordinates[:, 1]).sum() / total_mass
     z_cm = (masses * coordinates[:, 2]).sum() / total_mass
     return np.array([x_cm, y_cm, z_cm])
+
+
+def align_vectors(v1, v2, norm=True):
+    """ Calculates the rotation axis and angle to align v1 with v2.
+
+    Args:
+        - v1 (ndarray): Vector 1
+        - v2 (ndarray): Vector 2
+        - norm (bool): Normalize vectors (default: True)
+
+    Returns:
+        - dict: Rotation axis and angle for aligning vectors
+    """
+    if norm:
+        v1 = np.array(v1) / np.linalg.norm(v1)
+        v2 = np.array(v2) / np.linalg.norm(v2)
+    rotation_axis = np.cross(v1, v2)
+    d = np.dot(v1, v2)
+    angle = np.arccos(d)
+    if np.isnan(angle):
+        angle = 0
+        warnings.warn("Vectors are already aligned (parallel)!", RuntimeWarning)
+    return {'axis': rotation_axis, 'angle': angle}
