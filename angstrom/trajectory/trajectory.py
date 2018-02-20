@@ -27,7 +27,7 @@ class Trajectory:
         """
         Returns basic trajectory info.
         """
-        return "<Trajectory atoms: %i | frames: %i | dimensions: %i>" % tuple(np.shape(self.coordinates))
+        return "<Trajectory frames: %i | atoms: %i | dimensions: %i>" % tuple(np.shape(self.coordinates))
 
     def __len__(self):
         """
@@ -90,7 +90,7 @@ class Trajectory:
         ref_coor = coordinates[reference]
         return np.average(np.power((coordinates - ref_coor), 2))
 
-    def non_periodic_coordinates(self, simulation_box):
+    def non_periodic_coordinates(self, simulation_box, dmin=0.5):
         """Convert periodic simulation coordinates to non-periodic coordinates.
         *** ORTHORHOMBIC CELLS ONLY ***
 
@@ -100,4 +100,4 @@ class Trajectory:
         Returns:
             - ndarray: 3D list of non-periodic coordinates
         """
-        return non_periodic_coordinates(self.coordinates, simulation_box)
+        return non_periodic_coordinates(self.coordinates, simulation_box, dmin=dmin)
