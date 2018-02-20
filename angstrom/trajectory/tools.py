@@ -2,10 +2,11 @@
 --- Ångström ---
 Trajectory tools.
 """
+from copy import deepcopy
 import numpy as np
 
 
-def non_periodic_coordinates(coordinates, simulation_box):
+def non_periodic_coordinates(coordinates, simulation_box, dmin=0.5):
     """Convert periodic simulation coordinates to non-periodic coordinates.
     *** ORTHORHOMBIC CELLS ONLY ***
 
@@ -18,18 +19,18 @@ def non_periodic_coordinates(coordinates, simulation_box):
     """
     n_frames, n_atoms, _ = np.shape(coordinates)
     nonp_coordinates = np.empty((n_frames, n_atoms, 3))
-    nonp_coordinates[0] = coordinates[0].copy()
+    nonp_coordinates[0] = deepcopy(coordinates[0])
     for a in range(n_atoms):
         modifier = np.zeros(3)
         for f in range(1, n_frames):
-            coor = coordinates[f][a].copy()
-            prev_coor = coordinates[f - 1][a]
+            coor = deepcopy(coordinates[f][a])
+            prev_coor = deepcopy(coordinates[f - 1][a])
             for i in range(3):
                 dist = coor[i] - prev_coor[i]
-                if dist > simulation_box[i] * 0.5:
+                if dist > simulation_box[i] * dmin:
                     modifier[i] -= simulation_box[i]
-                elif dist <= -simulation_box[i] * 0.5:
+                elif dist <= -simulation_box[i] * dmin:
                     modifier[i] += simulation_box[i]
                 coor[i] += modifier[i]
-            nonp_coordinates[f][a] = coor
+            nonp_coordinates[f][a] = deepcopy(coor)
     return nonp_coordinates
