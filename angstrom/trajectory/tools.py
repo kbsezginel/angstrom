@@ -13,6 +13,9 @@ def non_periodic_coordinates(coordinates, simulation_box, dmin=0.5):
     Args:
         - coordinates (ndarray): 3D list of atomic coordinates for given number of frames
         - simulation_box (list): Dimensions of the simulation box: [a, b, c]
+        - dmin (float): Minimum traveled distance for periodic image jump.
+                        If the distance change of a specific atom is bigger than (box_length * dmin)
+                        then the atom is assumed to jump to a periodic image.
 
     Returns:
         - ndarray: 3D list of non-periodic coordinates
