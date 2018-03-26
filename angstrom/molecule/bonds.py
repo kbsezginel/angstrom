@@ -49,4 +49,4 @@ def get_bonds(atoms, coordinates, RADIUS_BUFFER=0.45, MIN_BOND_DISTANCE=0.16):
             max_bond_distance = (rcov[atoms[coors_z[i][0]]] + rcov[atoms[coors_z[j][0]]] + RADIUS_BUFFER)
             if distance >= MIN_BOND_DISTANCE and distance <= max_bond_distance:
                 bonds.append(tuple(sorted((coors_z[i][0], coors_z[j][0]))))
-    return bonds
+    return sorted(bonds)

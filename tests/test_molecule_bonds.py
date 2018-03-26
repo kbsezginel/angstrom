@@ -75,10 +75,8 @@ def test_ethane_should_have_seven_bonds():
                    [-1.166882, -0.833372,  0.568699],
                    [-1.115691,  0.932608,  0.515082],
                    [-1.184988,  0.004424, -0.987522]]
-
     bonds = get_bonds(atoms, coordinates)
     assert len(bonds) == 7
-
     expected_bonds = [(0, 1),
                       (1, 2),
                       (1, 3),
@@ -86,12 +84,23 @@ def test_ethane_should_have_seven_bonds():
                       (4, 5),
                       (4, 6),
                       (4, 7)]
-    expected_bonds = {frozenset(s) for s in expected_bonds}
-    bonds = {frozenset(s) for s in bonds}
-    assert len(expected_bonds ^ bonds) == 0
+    assert bonds == expected_bonds
 
 
 def test_benzene_read_and_get_bonds():
     benzene = Molecule(read=benzene_xyz)
     benzene.get_bonds()
     assert len(benzene.bonds) == 12
+    expected_bonds = [(0, 1),
+                      (0, 2),
+                      (0, 10),
+                      (2, 3),
+                      (2, 4),
+                      (4, 5),
+                      (4, 6),
+                      (6, 7),
+                      (6, 8),
+                      (8, 9),
+                      (8, 10),
+                      (10, 11)]
+    assert benzene.bonds == expected_bonds
