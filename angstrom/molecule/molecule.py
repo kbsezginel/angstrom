@@ -4,6 +4,7 @@ Molecule class for Ångström Python package.
 """
 from .read import read_xyz
 from .write import write_xyz
+from .bonds import get_bonds
 from angstrom.geometry import get_molecule_center, align_vectors
 from angstrom.geometry.quaternion import Quaternion
 import os
@@ -64,6 +65,10 @@ class Molecule:
                 write_xyz(xyz_file, self.atoms, self.coordinates, self.header)
             else:
                 write_xyz(xyz_file, self.atoms, self.coordinates)
+
+    def get_bonds(self):
+        """ Estimate molecular bonding. """
+        self.bonds = get_bonds(self.atoms, self.coordinates)
 
     def get_center(self, mass=True):
         """ Get coordinates for molecule center.

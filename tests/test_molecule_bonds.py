@@ -2,7 +2,12 @@
 --- Ångström ---
 Tests estimating molecular bonds.
 """
+from angstrom import Molecule
 from angstrom.molecule.bonds import get_bonds
+import os
+
+
+benzene_xyz = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'benzene.xyz')
 
 
 def test_atoms_too_close_should_not_be_bonded():
@@ -84,3 +89,9 @@ def test_ethane_should_have_seven_bonds():
     expected_bonds = {frozenset(s) for s in expected_bonds}
     bonds = {frozenset(s) for s in bonds}
     assert len(expected_bonds ^ bonds) == 0
+
+
+def test_benzene_read_and_get_bonds():
+    benzene = Molecule(read=benzene_xyz)
+    benzene.get_bonds()
+    assert len(benzene.bonds) == 12
