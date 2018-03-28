@@ -24,3 +24,4 @@ def test_write_xyz_benzene_molecule():
     benzene.header = 'benzene'
     benzene.write(test_file)
     assert filecmp.cmp(benzene_xyz, test_file)
+    os.remove(test_file)
