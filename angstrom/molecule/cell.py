@@ -28,3 +28,30 @@ class Cell:
         z_v[1] = (self.c * self.b * np.cos(self.alpha) - y_v[0] * z_v[0]) / y_v[1]
         z_v[2] = np.sqrt(self.c * self.c - z_v[0] * z_v[0] - z_v[1] * z_v[1])
         self.vectors = [x_v, y_v, z_v]
+
+    def calculate_vertices(self):
+        """
+        Calculate coordinates of unit cell vertices in the following order:
+        (0, 0, 0) - (a, 0, 0) - (b, 0, 0) - (c, 0, 0) - (a, b, 0) - (0, b, c) - (a, 0, c) - (a, b, c)
+        """
+        if not hasattr(self, 'vectors'):
+            self.calculate_vectors()
+        vertices = []
+        vertices.append([0, 0, 0])
+        # (a, 0, 0) - (b, 0, 0) - (c, 0, 0)
+        for vec in self.vectors:
+            vertices.append(vec)
+        # (a, b, 0)
+        vertices.append([self.vectors[0][0] + self.vectors[1][0], self.vectors[0][1] + self.vectors[1][1],
+                        self.vectors[0][2] + self.vectors[1][2]])
+        # (0, b, c)
+        vertices.append([self.vectors[1][0] + self.vectors[2][0], self.vectors[1][1] + self.vectors[2][1],
+                        self.vectors[1][2] + self.vectors[2][2]])
+        # (a, 0, c)
+        vertices.append([self.vectors[0][0] + self.vectors[2][0], self.vectors[0][1] + self.vectors[2][1],
+                        self.vectors[0][2] + self.vectors[2][2]])
+        # (a, b, c)
+        vertices.append([self.vectors[0][0] + self.vectors[1][0] + self.vectors[2][0],
+                        self.vectors[0][1] + self.vectors[1][1] + self.vectors[2][1],
+                        self.vectors[0][2] + self.vectors[1][2] + self.vectors[2][2]])
+        self.vertices = vertices
