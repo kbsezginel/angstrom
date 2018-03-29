@@ -1,6 +1,6 @@
 """
 --- Ångström ---
-Tests cell vectors calculation.
+Tests cell vertices calculation.
 """
 from angstrom.molecule import Cell
 import numpy as np
