@@ -5,6 +5,7 @@ Molecule class for Ångström Python package.
 from .read import read_xyz
 from .write import write_xyz
 from .bonds import get_bonds
+from .cell import Cell
 from angstrom.geometry import get_molecule_center, align_vectors
 from angstrom.geometry.quaternion import Quaternion
 import os
@@ -136,3 +137,22 @@ class Molecule:
         """
         alignment = align_vectors(mol_vector, align_vector)
         self.rotate([0, 0, 0], alignment['axis'], alignment['angle'], center=center, mass=mass)
+
+    def set_cell(self, cellpar):
+        """ Set cell for molecule.
+
+        Args:
+            - cellpar (list): Cell parameters -> [a, b, c, alpha, beta, gamma]
+        """
+        self.cell = Cell(cellpar, atoms=self.atoms, coordinates=self.coordinates)
+
+    def replicate(self, replication, center=True):
+        """ Build a supercell by replicating the cell.
+
+        Args:
+            - replication (list): Replication in cell vectors -> [a, b, c]
+        """
+        supercell = self.cell.supercell(replication, center=center)
+        supermol = Molecule(atoms=supercell.atoms, coordinates=supercell.coordinates)
+        supermol.cell = supercell
+        return supermol

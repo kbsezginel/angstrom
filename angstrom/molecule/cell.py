@@ -30,7 +30,7 @@ class Cell:
         z_v[0] = self.c * np.cos(self.beta)
         z_v[1] = (self.c * self.b * np.cos(self.alpha) - y_v[0] * z_v[0]) / y_v[1]
         z_v[2] = np.sqrt(self.c * self.c - z_v[0] * z_v[0] - z_v[1] * z_v[1])
-        self.vectors = [x_v, y_v, z_v]
+        self.vectors = np.array([x_v, y_v, z_v])
 
     def calculate_vertices(self):
         """
@@ -57,7 +57,7 @@ class Cell:
         vertices.append([self.vectors[0][0] + self.vectors[1][0] + self.vectors[2][0],
                         self.vectors[0][1] + self.vectors[1][1] + self.vectors[2][1],
                         self.vectors[0][2] + self.vectors[1][2] + self.vectors[2][2]])
-        self.vertices = vertices
+        self.vertices = np.array(vertices)
 
     def supercell(self, replication, center=True):
         """ Builds a supercell for given given replication in a, b, and c directions of the cell.
