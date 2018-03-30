@@ -107,7 +107,7 @@ class Cell:
 
         # Create new cell
         supcellpar = [self.a * replication[0], self.b * replication[1], self.c * replication[2]]
-        supcellpar += [self.alpha, self.beta, self.gamma]
+        supcellpar += [np.degrees(i) for i in [self.alpha, self.beta, self.gamma]]
         supcell = Cell(supcellpar)
         supcell.atoms = np.empty((0,), dtype='U2')
         supcell.coordinates = np.empty((0, 3))
