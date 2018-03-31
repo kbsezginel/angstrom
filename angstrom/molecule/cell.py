@@ -11,6 +11,9 @@ class Cell:
         """Initialize cell for a molecule with cell parameters. Cell angles in degrees. """
         self.a, self.b, self.c = cellpar[:3]
         self.alpha, self.beta, self.gamma = [np.radians(i) for i in cellpar[3:]]
+        self.calculate_volume()
+        self.calculate_vectors()
+        self._calculate_pbc_parameters()
         if atoms is not None and coordinates is not None:
             self.atoms = atoms
             self.coordinates = coordinates
@@ -37,8 +40,6 @@ class Cell:
         Calculate coordinates of unit cell vertices in the following order:
         (0, 0, 0) - (a, 0, 0) - (b, 0, 0) - (c, 0, 0) - (a, b, 0) - (0, b, c) - (a, 0, c) - (a, b, c)
         """
-        if not hasattr(self, 'vectors'):
-            self.calculate_vectors()
         vertices = []
         vertices.append([0, 0, 0])
         # (a, 0, 0) - (b, 0, 0) - (c, 0, 0)
@@ -81,8 +82,6 @@ class Cell:
         Returns:
             - cell: Supercell with replicated coordinates and atoms
         """
-        if not hasattr(self, 'vectors'):
-            self.calculate_vectors()
         a_v, b_v, c_v = self.vectors
 
         # Calculate center translation vectors for each cell
@@ -117,3 +116,42 @@ class Cell:
             supcell.atoms = np.concatenate((supcell.atoms, self.atoms))
             supcell.coordinates = np.concatenate((supcell.coordinates, self.coordinates + trans_vec))
         return supcell
+
+    def _calculate_pbc_parameters(self):
+        """Calculates constants used for periodic boundary conditions transformations."""
+        uc_cos = [np.cos(a) for a in [self.alpha, self.beta, self.gamma]]
+        uc_sin = [np.sin(a) for a in [self.alpha, self.beta, self.gamma]]
+
+        xf1 = 1 / self.a
+        xf2 = - uc_cos[2] / (self.a * uc_sin[2])
+        xf3 = (uc_cos[0] * uc_cos[2] - uc_cos[1]) / (self.a * self.frac_volume * uc_sin[2])
+        yf1 = 1 / (self.b * uc_sin[2])
+        yf2 = (uc_cos[1] * uc_cos[2] - uc_cos[0]) / (self.b * self.frac_volume * uc_sin[2])
+        zf1 = uc_sin[2] / (self.c * self.frac_volume)
+        self.to_frac = [xf1, xf2, xf3, yf1, yf2, zf1]
+
+        xc1 = self.a
+        xc2 = self.b * uc_cos[2]
+        xc3 = self.c * uc_cos[1]
+        yc1 = self.b * uc_sin[2]
+        yc2 = self.c * (uc_cos[0] - uc_cos[1] * uc_cos[2]) / uc_sin[2]
+        zc1 = self.c * self.frac_volume / uc_sin[2]
+        self.to_car = [xc1, xc2, xc3, yc1, yc2, zc1]
+
+    def car2frac(self, car_coor):
+        """ Convert cartesian coordinates to fractional coordinates.
+            Requires 'to_frac' constants which is calculated for MOF objects. """
+        x, y, z = car_coor
+        x_frac = self.to_frac[0] * x + self.to_frac[1] * y + self.to_frac[2] * z
+        y_frac = self.to_frac[3] * y + self.to_frac[4] * z
+        z_frac = self.to_frac[5] * z
+        return [x_frac, y_frac, z_frac]
+
+    def frac2car(self, frac_coor):
+        """ Convert fractional coordinates to cartesian coordinates.
+            Requires 'to_car' constants which is calculated for MOF objects. """
+        x_frac, y_frac, z_frac = frac_coor
+        x = self.to_car[0] * x_frac + self.to_car[1] * y_frac + self.to_car[2] * z_frac
+        y = self.to_car[3] * y_frac + self.to_car[4] * z_frac
+        z = self.to_car[5] * z_frac
+        return [x, y, z]
