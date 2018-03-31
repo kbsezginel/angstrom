@@ -20,7 +20,7 @@ class Cell:
         volume = 1 - np.cos(self.alpha)**2 - np.cos(self.beta)**2 - np.cos(self.gamma)**2
         volume += 2 * np.cos(self.alpha) * np.cos(self.beta) * np.cos(self.gamma)
         self.volume = self.a * self.b * self.c * np.sqrt(volume)
-        self.frac_volume = volume / (self.a * self.b * self.c)
+        self.frac_volume = self.volume / (self.a * self.b * self.c)
 
     def calculate_vectors(self):
         """ Calculates cell vectors. """
