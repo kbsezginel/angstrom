@@ -8,6 +8,7 @@ from .bonds import get_bonds
 from .cell import Cell
 from angstrom.geometry import get_molecule_center, align_vectors
 from angstrom.geometry.quaternion import Quaternion
+from angstrom.geometry.plane import Plane
 import os
 import numpy as np
 
@@ -125,6 +126,21 @@ class Molecule:
         self.coordinates = np.array([Q.rotation(coor, axis_point1, axis_point2, angle).np() for coor in self.coordinates])
         if center:
             self.center(current_center, mass=mass)
+
+    def reflect(self, plane, translate=None):
+        """ Get mirror image of a molecule by reflecting each atom through a plane of reflection.
+
+        Args:
+            - plane (Plane): Mirror plane defined by either 3 points or a string (ex: 'xy') for main planes.
+            - translate (float or None): Translate the molecule after reflection by given amount on the axis normal to the plane.
+        """
+        self._set_plane(plane)
+        self.coordinates = np.array([self.plane.reflect(i) for i in self.coordinates])
+        if translate is not None:
+            self.translate(np.array([self.plane.a, self.plane.b, self.plane.c]) * translate)
+
+    def _set_plane(self, args):
+        self.plane = Plane(args)
 
     def align(self, mol_vector, align_vector, center=False, mass=True):
         """ Align molecule to given vector using molecule vector.
