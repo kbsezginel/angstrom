@@ -2,48 +2,62 @@
 --- Ångström ---
 Visualization tools for arranging molecule positions and more.
 """
-import math
+import numpy as np
 
 
-def arrange_structure_positions(n_structures, div=5, distance=(10, 10)):
+def arrange_molecules(molecules, arrange=True, nx=5, distance=(-10, -10), caps=True):
+    """ Arrange molecules in a 2D grid for better visual representation.
+
+    Args:
+        - molecules (tuple): Molecule objects.
+        - arrange (bool): Arrange structure positions (default: True).
+        - nx (int): Number of structures in x axis (horizontal).
+        - distance (tuple): Separation distance in x and y axes.
+        - caps (bool): Make atom names all capital letters (required for nglview to assign correct color).
+
+    Returns:
+        - tuple: Atom coordinates, atom names, and group (residue) numbers.
     """
-    Arrange structure positions according to number of structures given.
+    n_structures = len(molecules)
+    if arrange:
+        translation_vectors = arrange_positions(n_structures, nx=nx, distance=distance)
+    else:
+        translation_vectors = np.zeros((n_structures, 3))
+
+    coordinates = np.concatenate([i.coordinates + v for i, v in zip(molecules, translation_vectors)])
+    atoms = np.concatenate([i.atoms for i in molecules])
+    group_numbers = [i for i in range(n_structures) for j in range(len(molecules[i].atoms))]
+
+    # nglview require atom names in all caps to color them properly
+    if caps:
+        atoms = [name.upper() for name in atoms]
+
+    return atoms, coordinates, group_numbers
+
+
+def arrange_positions(n_structures, nx=5, distance=(10, 10)):
+    """ Calculate translation vectors to arrange positions of structures.
+
+    Args:
+        - n_structures (int): Total number of structures
+        - nx (int): Number of structures in x axis (horizontal)
+        - distance (tuple): Separation distance in x and y axes
+
+    Returns:
+        - ndarray: Translation vectors to arrange structure positions.
     """
-    n_structures_lateral = div
-    split = math.ceil(n_structures / n_structures_lateral)
-    vertical_positions = axis_translation(split, distance=distance[1], axis=1)
-    translation_vectors = []
-    for s in range(split):
-        if s < 2:
-            n_split = math.ceil(n_structures / split)
-        else:
-            n_split = math.floor(n_structures / split)
-        new_vectors = axis_translation(n_split, distance=distance[0], axis=0)
-        new_vectors = translate(new_vectors, vector=vertical_positions[s])
-        translation_vectors += new_vectors
-    return translation_vectors
+    n_structures_vertical = np.ceil(n_structures / nx)
+    ylim = (n_structures_vertical - 1) * distance[1] / 2
+    n_structures_horizontal = np.ceil(n_structures / n_structures_vertical)
+    xlim = (n_structures_horizontal - 1) * distance[0] / 2
 
-
-def translate(atom_coors, vector=[-10, 0, 0]):
-    """ Translate given coordinates with given vector """
-    translated_coors = []
-    x, y, z = vector
-    for coor in atom_coors:
-        new_coor = [coor[0] + x, coor[1] + y, coor[2] + z]
-        translated_coors.append(new_coor)
-    return translated_coors
-
-
-def axis_translation(n_structures, distance=-10, axis=0):
-    """
-    Automatically adjust structure positions equally distant from each other in given axis
-        - distance: distance between each structure
-        - axis: axis selection for translation (0: x-axis, 1: y-axis, 2: z-axis)
-    """
-    translation_vectors = []
-    lim = (n_structures - 1) * distance / 2
-    for i in range(n_structures):
-        vec = [0, 0, 0]
-        vec[axis] = -lim + i * distance
-        translation_vectors.append(vec)
+    translation_vectors = np.zeros((n_structures, 3))
+    i = 0
+    for ycoor in np.arange(ylim + distance[1], -ylim, -distance[1]):
+        for xcoor in np.arange(-xlim, xlim + distance[0], distance[0]):
+            if i < n_structures:
+                translation_vectors[i] = [xcoor, ycoor, 0]
+                i += 1
+            else:
+                break
     return translation_vectors
