@@ -70,7 +70,13 @@ def write_pdb(fileobj, atoms, coordinates, bonds=None, group=None, header='angst
         residue_no = group[atom_index - 1]
         fileobj.write(pdb_format % (atom_index, atom_name, residue_no, residue_no, x, y, z, atom_name.rjust(2)))
     if bonds is not None:
-        # write bonds
-        pass
+        for atom in range(1, len(atoms) + 1):
+            atom_bonds = [atom]
+            for b in bonds:
+                if atom == b[0] + 1:
+                    atom_bonds.append(b[1] + 1)
+                elif atom == b[1] + 1:
+                    atom_bonds.append(b[0] + 1)
+            fileobj.write('CONECT' + ' %4i' * len(atom_bonds) % tuple(atom_bonds) + '\n')
     fileobj.write('END\n')
     fileobj.flush()
