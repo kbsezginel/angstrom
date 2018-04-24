@@ -21,7 +21,6 @@ def test_write_xyz_benzene_molecule():
     """Tests reading xyz formatted molecule file"""
     benzene = Molecule(atoms=benzene_atoms, coordinates=benzene_coors)
     test_file = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'benzene_test.xyz')
-    benzene.header = 'benzene'
-    benzene.write(test_file)
+    benzene.write(test_file, header='benzene')
     assert filecmp.cmp(benzene_xyz, test_file)
     os.remove(test_file)

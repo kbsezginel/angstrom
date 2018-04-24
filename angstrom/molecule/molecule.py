@@ -3,7 +3,7 @@
 Molecule class for Ångström Python package.
 """
 from .read import read_xyz
-from .write import write_xyz
+from .write import write_molecule
 from .bonds import get_bonds
 from .cell import Cell
 from angstrom.geometry import get_molecule_center, align_vectors
@@ -53,20 +53,19 @@ class Molecule:
         mol = read_xyz(filename)
         self.atoms, self.coordinates, self.header = mol['atoms'], mol['coordinates'], mol['header']
 
-    def write(self, filename):
+    def write(self, filename, bonds=None, header='angstrom', group=None):
         """ Write molecule file.
 
         Args:
-            - filename (str): xyz file name
+            - filename (str): Molecule file name, file format extracted from file extension (formats: xyz | pdb)
+            - bonds (list): Atomic bonding (used in pdb format)
+            - header (str): Molecule file header
+            - group (list): Atom grouping (used in pdb format)
 
         Returns:
-            - Writes xyz formatted molecule information to given file name.
+            - Writes molecule information to given file name.
         """
-        with open(filename, 'w') as xyz_file:
-            if hasattr(self, 'header'):
-                write_xyz(xyz_file, self.atoms, self.coordinates, self.header)
-            else:
-                write_xyz(xyz_file, self.atoms, self.coordinates)
+        write_molecule(filename, self.atoms, self.coordinates, bonds=bonds, header=header, group=group)
 
     def get_bonds(self):
         """ Estimate molecular bonding. """
