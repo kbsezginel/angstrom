@@ -2,13 +2,15 @@
 --- Ångström ---
 Render molecular images and animations.
 """
-from .render_settings import openbabel_settings
+from .render_settings import openbabel_settings, get_blender_settings
 from angstrom.molecule.write import write_pdb
 import subprocess
 import tempfile
+import pickle
+import os
 
 
-def render(molecule, img_file, renderer='blender', settings=None):
+def render(molecule, img_file, renderer='blender', settings=None, verbose=False):
     """ Render Molecule object
 
     Args:
@@ -25,7 +27,9 @@ def render(molecule, img_file, renderer='blender', settings=None):
     temp_pdb_file = tempfile.NamedTemporaryFile(mode='w+', suffix='.pdb')
     write_pdb(temp_pdb_file, molecule.atoms, molecule.coordinates, bonds=molecule.bonds)
     if renderer == 'blender':
-        render_blender(temp_pdb_file.name, img_file, settings)
+        if settings is None:
+            settings = get_blender_settings()
+        render_blender(temp_pdb_file.name, img_file, settings, verbose=verbose)
     elif renderer == 'openbabel':
         if settings is None:
             settings = openbabel_settings
@@ -45,7 +49,7 @@ def render_openbabel(mol_file, img_file, settings=openbabel_settings):
     subprocess.call(command)
 
 
-def render_blender(mol_file, img_file, settings):
+def render_blender(mol_file, img_file, settings, verbose=False):
     """ Render molecular images using Blender
 
     Args:
@@ -53,4 +57,16 @@ def render_blender(mol_file, img_file, settings):
         - img_file (str): Image file (recommended file format: png)
         - settings (dict): Blender rendering settings
     """
-    pass
+    settings['output'] = img_file
+    settings['pdb'] = {**{'filepath': mol_file}, **settings['pdb']}
+    # Save options as pickle
+    with open(settings['pickle'], 'wb') as handle:
+        pickle.dump(settings, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    command = [settings['executable'], '--background', '--python', settings['script'], '--', settings['pickle']]
+    with open(os.devnull, 'w') as null:
+        blend = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = blend.stdout.decode(), blend.stderr.decode()
+        if verbose:
+            print("Stdout:\n\n%s\nStderr:\n%s" % (stdout, stderr))
+    os.remove(settings['pickle'])
