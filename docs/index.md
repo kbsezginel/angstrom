@@ -28,7 +28,7 @@ python setup.py install
 
 ### Visualization
 In order to make sure all visualization features are avaiable you need to install additional software.
-Take a look at [visualization](/visualization) page to read more about installation and usage of these software
+Take a look at [visualization](visualization) page to read more about installation and usage of these software
 and visualizing molecules using Ångström.
 
 Ångström will also be available through `pip` in near future.
