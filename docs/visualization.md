@@ -62,3 +62,25 @@ Blender is run from the command line usin the following line:
 blender --background --python myscript.py
 ```
 
+Rendering Animations
+--------------------
+
+### Blender
+
+### VMD
+
+```
+vmd -dispdev text -eofexit < vis-state.vmd
+```
+
+Jupyter Notebook
+----------------
+
+### Nglview
+
+Browser
+-------
+
+### Three.js
+
+### HTML Embed
