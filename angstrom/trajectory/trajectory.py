@@ -13,11 +13,14 @@ class Trajectory:
     """
     Reading and analyzing trajectories in xyz format.
     """
-    def __init__(self, read=None):
+    def __init__(self, atoms=None, coordinates=None, read=None):
         """
         Create a trajectory object.
         """
-        if read is not None:
+        if atoms is not None and coordinates is not None:
+            self.atoms = atoms
+            self.coordinates = coordinates
+        elif read is not None:
             self.read(read)
         else:
             self.atoms = []
