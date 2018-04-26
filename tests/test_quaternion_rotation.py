@@ -2,7 +2,7 @@
 --- Ångström ---
 Tests Quaternion rotations.
 """
-from angstrom.geometry.quaternion import Quaternion
+from angstrom.geometry import Quaternion
 import numpy as np
 
 

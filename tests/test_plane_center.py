@@ -3,7 +3,7 @@
 Tests Plane center calculation.
 """
 import numpy as np
-from angstrom.geometry.plane import Plane
+from angstrom.geometry import Plane
 
 
 def test_xy_and_yx_plane_center():

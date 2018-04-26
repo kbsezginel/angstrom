@@ -2,7 +2,7 @@
 --- Ångström ---
 Tests Plane reflection.
 """
-from angstrom.geometry.plane import Plane
+from angstrom.geometry import Plane
 import numpy as np
 
 

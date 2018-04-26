@@ -3,7 +3,7 @@
 Tests Plane grid generation.
 """
 import numpy as np
-from angstrom.geometry.plane import Plane
+from angstrom.geometry import Plane
 
 
 def test_number_of_grid_points_for_different_grid_sizes_and_grid_spaces():
