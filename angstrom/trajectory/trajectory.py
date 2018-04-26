@@ -38,6 +38,12 @@ class Trajectory:
         """
         return len(self.atoms)
 
+    def __add__(self, traj):
+        """ Molecule addition for joining the coordinates and elements into a new molecule object. """
+        new_traj = Trajectory(atoms=np.append(self.atoms, traj.atoms, axis=0),
+                              coordinates=np.append(self.coordinates, traj.coordinates, axis=0))
+        return new_traj
+
     def read(self, filename):
         """
         Read xyz formatted trajectory file.
