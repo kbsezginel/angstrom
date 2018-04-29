@@ -38,11 +38,11 @@ class Cell:
     def calculate_vertices(self):
         """
         Calculate coordinates of unit cell vertices in the following order:
-        (0, 0, 0) - (a, 0, 0) - (b, 0, 0) - (c, 0, 0) - (a, b, 0) - (0, b, c) - (a, 0, c) - (a, b, c)
+        (0, 0, 0) - (a, 0, 0) - (0, b, 0) - (0, 0, c) - (a, b, 0) - (0, b, c) - (a, 0, c) - (a, b, c)
         """
         vertices = []
         vertices.append([0, 0, 0])
-        # (a, 0, 0) - (b, 0, 0) - (c, 0, 0)
+        # (a, 0, 0) - (0, b, 0) - (0, 0, c)
         for vec in self.vectors:
             vertices.append(vec)
         # (a, b, 0)
