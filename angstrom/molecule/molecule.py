@@ -11,6 +11,7 @@ from angstrom.geometry.quaternion import Quaternion
 from angstrom.geometry.plane import Plane
 import os
 import numpy as np
+import periodictable
 
 
 class Molecule:
@@ -75,6 +76,10 @@ class Molecule:
     def get_bonds(self):
         """ Estimate molecular bonding. """
         self.bonds = get_bonds(self.atoms, self.coordinates)
+
+    def get_molecular_weight(self):
+        """ Calculate molecular weight. """
+        return sum([periodictable.elements.symbol(atom).mass for atom in self.atoms])
 
     def get_center(self, mass=True):
         """ Get coordinates for molecule center.
