@@ -54,12 +54,13 @@ class Molecule:
         mol = read_xyz(filename)
         self.atoms, self.coordinates, self.header = mol['atoms'], mol['coordinates'], mol['header']
 
-    def write(self, filename, bonds=False, header='angstrom', group=None):
+    def write(self, filename, bonds=False, cell=None, header='angstrom', group=None):
         """ Write molecule file.
 
         Args:
             - filename (str): Molecule file name, file format extracted from file extension (formats: xyz | pdb)
             - bonds (bool): Write atomic bonding (used in pdb format)
+            - cell (list): Write unit cell parameters (used in cif format)
             - header (str): Molecule file header
             - group (list): Atom grouping (used in pdb format)
 
@@ -69,9 +70,9 @@ class Molecule:
         if bonds:
             if not hasattr(self, 'bonds'):
                 self.get_bonds()
-            write_molecule(filename, self.atoms, self.coordinates, bonds=self.bonds, header=header, group=group)
+            write_molecule(filename, self.atoms, self.coordinates, bonds=self.bonds, cell=cell, header=header, group=group)
         else:
-            write_molecule(filename, self.atoms, self.coordinates, bonds=None, header=header, group=group)
+            write_molecule(filename, self.atoms, self.coordinates, bonds=None, cell=cell, header=header, group=group)
 
     def get_bonds(self):
         """ Estimate molecular bonding. """
