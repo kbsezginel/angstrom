@@ -170,7 +170,7 @@ class Molecule:
         Args:
             - cellpar (list): Cell parameters -> [a, b, c, alpha, beta, gamma]
         """
-        self.cell = Cell(cellpar, atoms=self.atoms, coordinates=self.coordinates)
+        self.cell = Cell(cellpar)
 
     def replicate(self, replication, center=True):
         """ Build a supercell by replicating the cell.
@@ -178,7 +178,7 @@ class Molecule:
         Args:
             - replication (list): Replication in cell vectors -> [a, b, c]
         """
-        supercell = self.cell.supercell(replication, center=center)
-        supermol = Molecule(atoms=supercell.atoms, coordinates=supercell.coordinates)
+        supercell, atoms, coors = self.cell.supercell(self.atoms, self.coordinates, replication, center=center)
+        supermol = Molecule(atoms=atoms, coordinates=coors)
         supermol.cell = supercell
         return supermol

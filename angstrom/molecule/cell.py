@@ -7,16 +7,13 @@ import numpy as np
 
 class Cell:
     """Cell class for unit cell and periodic boundary operations."""
-    def __init__(self, cellpar, atoms=None, coordinates=None):
+    def __init__(self, cellpar):
         """Initialize cell for a molecule with cell parameters. Cell angles in degrees. """
         self.a, self.b, self.c = cellpar[:3]
         self.alpha, self.beta, self.gamma = [np.radians(i) for i in cellpar[3:]]
         self.calculate_volume()
         self.calculate_vectors()
         self._calculate_pbc_parameters()
-        if atoms is not None and coordinates is not None:
-            self.atoms = atoms
-            self.coordinates = coordinates
 
     def calculate_volume(self):
         """ Calculates cell volume. """
@@ -60,10 +57,12 @@ class Cell:
                         self.vectors[0][2] + self.vectors[1][2] + self.vectors[2][2]])
         self.vertices = np.array(vertices)
 
-    def supercell(self, replication, center=True):
-        """ Builds a supercell for given given replication in a, b, and c directions of the cell.
+    def supercell(self, atoms, coordinates, replication, center=True):
+        """ Builds a supercell for given replication in a, b, and c directions of the cell.
 
         Args:
+            - atoms (ndarray): List of atom types
+            - coordinates (ndarray): List of atomic coordinates
             - replication (list): Replication in cell vectors -> [a, b, c]
             - center (bool): Keep the original cell at the center
         Ex:
@@ -108,14 +107,14 @@ class Cell:
         supcellpar = [self.a * replication[0], self.b * replication[1], self.c * replication[2]]
         supcellpar += [np.degrees(i) for i in [self.alpha, self.beta, self.gamma]]
         supcell = Cell(supcellpar)
-        supcell.atoms = np.empty((0,), dtype='U2')
-        supcell.coordinates = np.empty((0, 3))
+        supcell_atoms = np.empty((0,), dtype='U2')
+        supcell_coordinates = np.empty((0, 3))
 
         # Calculate supercell coordinates
         for trans_vec in translation_vectors:
-            supcell.atoms = np.concatenate((supcell.atoms, self.atoms))
-            supcell.coordinates = np.concatenate((supcell.coordinates, self.coordinates + trans_vec))
-        return supcell
+            supcell_atoms = np.concatenate((supcell_atoms, atoms))
+            supcell_coordinates = np.concatenate((supcell_coordinates, coordinates + trans_vec))
+        return supcell, supcell_atoms, supcell_coordinates
 
     def _calculate_pbc_parameters(self):
         """Calculates constants used for periodic boundary conditions transformations."""
