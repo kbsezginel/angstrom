@@ -37,12 +37,12 @@ default_model = {'use_center': True,               # Position object to origin
                  'use_sticks_one_object_nr': 200   # Number of sticks to be grouped at once
                  }
 
-ball_and_stick = {'scale_ballradius': 0.75,
-                  'scale_distances': 1.5,
-                  'sticks_radius': 0.3}
+ball_and_stick = {'scale_ballradius': 0.5,
+                  'scale_distances': 1,
+                  'sticks_radius': 0.25}
 
 space_filling = {'scale_ballradius': 1,            # Scale factor for all atom radii
-                 'scale_distances': 1.5,           # Scale factor for all distances
+                 'scale_distances': 1,             # Scale factor for all distances
                  'atomradius': '2',                # Type of radius -> 0: Pre-defined | 1: Atomic radius | 2: van der Waals
                  'use_sticks': False,              # Use bonds as cylinders
                  }
@@ -63,9 +63,30 @@ IMG_SCRIPT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'blender_i
 
 def get_blender_settings(executable='blender', render=True, save='', model='default',
                          camera_zoom=20, camera_distance=10, camera_view='xy', camera_type='ORTHO',
-                         resolution=[1920, 1080], brightness=1.0, lamp=2.0, colors=COLORS,
+                         resolution=(1920, 1080), brightness=1.0, lamp=2.0, colors=COLORS,
                          verbose=False, script=IMG_SCRIPT, pickle='temp-settings.pkl'):
-    """ Get Blender image rendering settings """
+    """ Get Blender image rendering settings
+
+    Args:
+        - executable (str): Path to blender executable (depends on OS)
+        - render (bool): Render image switch
+        - save (str): Saves .blend file to given filename
+        - model (str): Molecule model (default | ball-and-stick | space_filling)
+        - camera_zoom (float): Camera zoom / focal length (default: 20)
+        - camera_distance (float): Distance between the camera and the molecule (default: 10)
+        - camera_view (str): Camera view plane (xy | xz | yx | yz | zx | zy)
+        - camera_type (str): Camera type (ORTHO | PERSP)
+        - resolution (tuple): Image resolution (default: 1920 x 1080)
+        - brightness (float): Image brighness (environmental lightning)
+        - lamp (float): Lamp strength (default: 2)
+        - colors (dict): Atom colors in RGB | ex: {'Carbon': (0.1, 0.1, 0.1), 'Oxygen': (0.7, 0.0, 0.0)}
+        - verbose (bool): Blender subprocess verbosity
+        - script (str): Python script to render the image
+        - pickle (str): Pickle file for communicating settings with Blender
+
+    Returns:
+        - dict: Blender render settings
+        """
     d = camera_distance
     VIEW = {'xy': dict(location=[0, 0, d], rotation=[0, 0, 0]),
             'xz': dict(location=[0, -d, 0], rotation=[PI / 2, 0, 0]),
