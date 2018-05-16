@@ -15,6 +15,11 @@ class Cell:
         self.calculate_vectors()
         self._calculate_pbc_parameters()
 
+    def __repr__(self):
+        """ Cell class return. """
+        cellpar = (self.a, self.b, self.c, np.degrees(self.alpha), np.degrees(self.beta), np.degrees(self.gamma))
+        return "<Cell | a: %.2f b: %.2f c: %.2f | alpha: %.2f beta: %.2f gamma: %.2f>" % cellpar
+
     def calculate_volume(self):
         """ Calculates cell volume. """
         volume = 1 - np.cos(self.alpha)**2 - np.cos(self.beta)**2 - np.cos(self.gamma)**2
