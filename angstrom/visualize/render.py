@@ -34,6 +34,8 @@ def render(molecule, img_file, renderer='blender', settings=None, verbose=False)
         if settings is None:
             settings = openbabel_settings
         render_openbabel(temp_pdb_file.name, img_file, settings)
+    elif renderer == 'vmd':
+        render_vmd(temp_pdb_file.name, img_file, settings, verbose=verbose)
     temp_pdb_file.close()
 
 
@@ -70,3 +72,20 @@ def render_blender(mol_file, img_file, settings, verbose=False):
         if verbose:
             print("Stdout:\n\n%s\nStderr:\n%s" % (stdout, stderr))
     os.remove(settings['pickle'])
+
+
+def render_vmd(mol_file, img_file, settings, verbose=False):
+    """ Render molecular images using VMD
+
+    Args:
+        - mol_file (str): Molecule file
+        - img_file (str): Image file
+        - settings (str): VMD visualization state file
+    """
+    input_file = open(settings, 'r')
+    command = ['vmd', '-dispdev' 'text']
+    vmd = subprocess.run(command, stdin=input_file, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = vmd.stdout.decode(), vmd.stderr.decode()
+    input_file.close()
+    if verbose:
+        print("Stdout:\n\n%s\nStderr:\n%s" % (stdout, stderr))
