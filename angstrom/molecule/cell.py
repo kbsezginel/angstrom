@@ -13,6 +13,7 @@ class Cell:
         self.alpha, self.beta, self.gamma = [np.radians(i) for i in cellpar[3:]]
         self.calculate_volume()
         self.calculate_vectors()
+        self.calculate_vertices()
         self._calculate_pbc_parameters()
 
     def __repr__(self):
