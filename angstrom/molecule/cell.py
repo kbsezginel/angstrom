@@ -14,6 +14,7 @@ class Cell:
         self.calculate_volume()
         self.calculate_vectors()
         self.calculate_vertices()
+        self.calculate_edges()
         self._calculate_pbc_parameters()
 
     def __repr__(self):
@@ -66,6 +67,29 @@ class Cell:
                         self.vectors[0][1] + self.vectors[1][1] + self.vectors[2][1],
                         self.vectors[0][2] + self.vectors[1][2] + self.vectors[2][2]])
         self.vertices = np.array(vertices)
+
+    def calculate_edges(self):
+        """
+        Calculate coordinates of two points for each edge of the unit cell in the following order:
+        1.  (a, 0, 0) - (0, 0, 0) | 2.  (0, b, 0) - (0, 0, 0) | 3.  (0, 0, c) - (0, 0, 0)
+        4.  (a, b, 0) - (a, 0, 0) | 5.  (a, 0, c) - (a, 0, 0) | 6.  (a, b, 0) - (0, b, 0)
+        7.  (0, b, c) - (0, b, 0) | 8.  (0, b, c) - (0, 0, c) | 9.  (a, 0, c) - (0, 0, c)
+        10. (a, b, c) - (a, b, 0) | 11. (a, b, c) - (0, b, c) | 12. (a, b, c) - (a, 0, c)
+        """
+        # 12 edges with 2 points for each edge and 3 dimensions for each point
+        self.edges = np.ndarray((12, 2, 3))
+        self.edges[0] = [self.vertices[1], self.vertices[0]]
+        self.edges[1] = [self.vertices[2], self.vertices[0]]
+        self.edges[2] = [self.vertices[3], self.vertices[0]]
+        self.edges[3] = [self.vertices[4], self.vertices[1]]
+        self.edges[4] = [self.vertices[6], self.vertices[1]]
+        self.edges[5] = [self.vertices[4], self.vertices[2]]
+        self.edges[6] = [self.vertices[5], self.vertices[2]]
+        self.edges[7] = [self.vertices[5], self.vertices[3]]
+        self.edges[8] = [self.vertices[6], self.vertices[3]]
+        self.edges[9] = [self.vertices[7], self.vertices[4]]
+        self.edges[10] = [self.vertices[7], self.vertices[5]]
+        self.edges[11] = [self.vertices[7], self.vertices[6]]
 
     def supercell(self, atoms, coordinates, replication, center=True):
         """ Builds a supercell for given replication in a, b, and c directions of the cell.
