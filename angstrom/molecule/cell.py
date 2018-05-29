@@ -20,6 +20,10 @@ class Cell:
         cellpar = (self.a, self.b, self.c, np.degrees(self.alpha), np.degrees(self.beta), np.degrees(self.gamma))
         return "<Cell | a: %.2f b: %.2f c: %.2f | alpha: %.2f beta: %.2f gamma: %.2f>" % cellpar
 
+    def to_list(self):
+        """ Returns cell parameters as a list. """
+        return [self.a, self.b, self.c, np.degrees(self.alpha), np.degrees(self.beta), np.degrees(self.gamma)]
+
     def calculate_volume(self):
         """ Calculates cell volume. """
         volume = 1 - np.cos(self.alpha)**2 - np.cos(self.beta)**2 - np.cos(self.gamma)**2
