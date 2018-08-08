@@ -8,7 +8,15 @@ import numpy as np
 class Cell:
     """Cell class for unit cell and periodic boundary operations."""
     def __init__(self, cellpar):
-        """Initialize cell for a molecule with cell parameters. Cell angles in degrees. """
+        """
+        Initialize cell for a molecule with cell parameters. Cell angles in degrees.
+
+        Parameters
+        ----------
+        cellpar : list
+            List of cell parameters -> [a, b, c, alpha, beta, gamma]. Angles in degrees.
+
+        """
         self.a, self.b, self.c = cellpar[:3]
         self.alpha, self.beta, self.gamma = [np.radians(i) for i in cellpar[3:]]
         self.calculate_volume()
@@ -18,23 +26,52 @@ class Cell:
         self._calculate_pbc_parameters()
 
     def __repr__(self):
-        """ Cell class return. """
+        """
+        Cell class return.
+
+        """
         cellpar = (self.a, self.b, self.c, np.degrees(self.alpha), np.degrees(self.beta), np.degrees(self.gamma))
         return "<Cell | a: %.2f b: %.2f c: %.2f | alpha: %.2f beta: %.2f gamma: %.2f>" % cellpar
 
     def to_list(self):
-        """ Returns cell parameters as a list. """
+        """
+        Returns cell parameters as a list.
+
+        """
         return [self.a, self.b, self.c, np.degrees(self.alpha), np.degrees(self.beta), np.degrees(self.gamma)]
 
     def calculate_volume(self):
-        """ Calculates cell volume. """
+        """
+        Calculates cell volume and fractional volume.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+            Assigns 'volume' and 'frac_volume' attributes to the Cell object.
+        """
         volume = 1 - np.cos(self.alpha)**2 - np.cos(self.beta)**2 - np.cos(self.gamma)**2
         volume += 2 * np.cos(self.alpha) * np.cos(self.beta) * np.cos(self.gamma)
         self.volume = self.a * self.b * self.c * np.sqrt(volume)
         self.frac_volume = self.volume / (self.a * self.b * self.c)
 
     def calculate_vectors(self):
-        """ Calculates cell vectors. """
+        """
+        Calculates cell vectors.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+            Assigns 'vectors' attribute to the Cell object.
+
+        """
         x_v = [self.a, 0, 0]
         y_v = [self.b * np.cos(self.gamma), self.b * np.sin(self.gamma), 0]
         z_v = [0.0] * 3
@@ -46,7 +83,18 @@ class Cell:
     def calculate_vertices(self):
         """
         Calculate coordinates of unit cell vertices in the following order:
+
         (0, 0, 0) - (a, 0, 0) - (0, b, 0) - (0, 0, c) - (a, b, 0) - (0, b, c) - (a, 0, c) - (a, b, c)
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+            Assigns 'vertices' attribute to the Cell object.
+
         """
         vertices = []
         vertices.append([0, 0, 0])
@@ -71,10 +119,21 @@ class Cell:
     def calculate_edges(self):
         """
         Calculate coordinates of two points for each edge of the unit cell in the following order:
+
         1.  (a, 0, 0) - (0, 0, 0) | 2.  (0, b, 0) - (0, 0, 0) | 3.  (0, 0, c) - (0, 0, 0)
         4.  (a, b, 0) - (a, 0, 0) | 5.  (a, 0, c) - (a, 0, 0) | 6.  (a, b, 0) - (0, b, 0)
         7.  (0, b, c) - (0, b, 0) | 8.  (0, b, c) - (0, 0, c) | 9.  (a, 0, c) - (0, 0, c)
         10. (a, b, c) - (a, b, 0) | 11. (a, b, c) - (0, b, c) | 12. (a, b, c) - (a, 0, c)
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+            Assigns 'edges' attribute to the Cell object.
+
         """
         # 12 edges with 2 points for each edge and 3 dimensions for each point
         self.edges = np.ndarray((12, 2, 3))
@@ -92,28 +151,39 @@ class Cell:
         self.edges[11] = [self.vertices[7], self.vertices[6]]
 
     def supercell(self, atoms, coordinates, replication, center=True):
-        """ Builds a supercell for given replication in a, b, and c directions of the cell.
+        """
+        Builds a supercell for given replication in a, b, and c directions of the cell.
 
-        Args:
-            - atoms (ndarray): List of atom types
-            - coordinates (ndarray): List of atomic coordinates
-            - replication (list): Replication in cell vectors -> [a, b, c]
-            - center (bool): Keep the original cell at the center
-        Ex:
-            The X represents the original cell.
-            The position of the original cell can be selected using the center keyword argument:
+        Notes
+        -----
+        The X represents the original cell.
+        The position of the original cell can be selected using the 'center' keyword argument:
 
-                center=True        center=False
-                -------------      -------------
-                |   |   |   |      |   |   |   |
-                -------------      -------------
-                |   | X |   |      |   |   |   |
-                -------------      -------------
-                |   |   |   |      | X |   |   |
-                -------------      -------------
+            center=True        center=False
+            -------------      -------------
+            |   |   |   |      |   |   |   |
+            -------------      -------------
+            |   | X |   |      |   |   |   |
+            -------------      -------------
+            |   |   |   |      | X |   |   |
+            -------------      -------------
 
-        Returns:
-            - cell: Supercell with replicated coordinates and atoms
+        Parameters
+        ----------
+        atoms : ndarray
+            List of atom types.
+        coordinates : ndarray
+            List of atomic coordinates.
+        replication : list
+            Replication in cell vectors -> [a, b, c].
+        center : bool
+            Keep the original cell at the center.
+
+        Returns
+        -------
+        Cell
+            Supercell with replicated coordinates and atoms.
+
         """
         a_v, b_v, c_v = self.vectors
 
@@ -151,7 +221,10 @@ class Cell:
         return supcell, supcell_atoms, supcell_coordinates
 
     def _calculate_pbc_parameters(self):
-        """Calculates constants used for periodic boundary conditions transformations."""
+        """
+        Calculates constants used for periodic boundary conditions transformations.
+
+        """
         uc_cos = [np.cos(a) for a in [self.alpha, self.beta, self.gamma]]
         uc_sin = [np.sin(a) for a in [self.alpha, self.beta, self.gamma]]
 
@@ -172,8 +245,24 @@ class Cell:
         self.to_car = [xc1, xc2, xc3, yc1, yc2, zc1]
 
     def car2frac(self, car_coor):
-        """ Convert cartesian coordinates to fractional coordinates.
-            Requires 'to_frac' constants which is calculated for MOF objects. """
+        """
+        Convert cartesian coordinates to fractional coordinates.
+
+        Parameters
+        ----------
+        atoms : ndarray
+            List of atom types.
+
+        Returns
+        -------
+        list
+            Fractional coordinates.
+
+        Notes
+        -----
+        Requires 'to_frac' attribute which is calculated for Cell objects during initialization.
+
+        """
         x, y, z = car_coor
         x_frac = self.to_frac[0] * x + self.to_frac[1] * y + self.to_frac[2] * z
         y_frac = self.to_frac[3] * y + self.to_frac[4] * z
@@ -181,8 +270,24 @@ class Cell:
         return [x_frac, y_frac, z_frac]
 
     def frac2car(self, frac_coor):
-        """ Convert fractional coordinates to cartesian coordinates.
-            Requires 'to_car' constants which is calculated for MOF objects. """
+        """
+        Convert fractional coordinates to cartesian coordinates.
+
+        Parameters
+        ----------
+        atoms : ndarray
+            List of atom types.
+
+        Returns
+        -------
+        list
+            Cartesian coordinates.
+
+        Notes
+        -----
+        Requires 'to_car' attribute which is calculated for Cell objects during initialization.
+
+        """
         x_frac, y_frac, z_frac = frac_coor
         x = self.to_car[0] * x_frac + self.to_car[1] * y_frac + self.to_car[2] * z_frac
         y = self.to_car[3] * y_frac + self.to_car[4] * z_frac
