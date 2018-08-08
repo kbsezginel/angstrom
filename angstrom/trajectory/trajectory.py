@@ -12,10 +12,21 @@ import numpy as np
 class Trajectory:
     """
     Reading and analyzing trajectories in xyz format.
+
     """
     def __init__(self, atoms=None, coordinates=None, read=None):
         """
         Create a trajectory object.
+
+        Parameters
+        ----------
+        atoms : list or None
+            List of elements of the molecule for each frame.
+        coordinates : list or None
+            List of atomic positions of the molecule for each frame.
+        read : str or None
+            File name to read molecule file (formats: xyz).
+
         """
         if atoms is not None and coordinates is not None:
             self.atoms = atoms
@@ -29,17 +40,32 @@ class Trajectory:
     def __repr__(self):
         """
         Returns basic trajectory info.
+
         """
         return "<Trajectory frames: %i | atoms: %i | dimensions: %i>" % tuple(np.shape(self.coordinates))
 
     def __len__(self):
         """
         Returns number of frames.
+
         """
         return len(self.atoms)
 
     def __add__(self, traj):
-        """ Molecule addition for joining the coordinates and elements into a new molecule object. """
+        """
+        Trajectory addition for joining the coordinates and elements into a new Trajectory object.
+
+        Parameters
+        ----------
+        traj : Trajectory
+            Trajectory object to be added
+
+        Returns
+        -------
+        Trajectory
+            Joined Trajectory object.
+
+        """
         new_traj = Trajectory(atoms=np.append(self.atoms, traj.atoms, axis=0),
                               coordinates=np.append(self.coordinates, traj.coordinates, axis=0))
         return new_traj
@@ -48,8 +74,16 @@ class Trajectory:
         """
         Read xyz formatted trajectory file.
 
-        Args:
-            - filename (str): Trajectory file name.
+        Parameters
+        ----------
+        filename : str
+            Trajectory file name.
+
+        Returns
+        -------
+        None
+            Assigns 'coordinates', 'atoms', and 'headers' attributes.
+
         """
         traj = read_xyz_traj(filename)
         self.atoms, self.coordinates, self.headers = traj['atoms'], traj['coordinates'], traj['headers']
@@ -58,8 +92,16 @@ class Trajectory:
         """
         Write xyz formatted trajectory file.
 
-        Args:
-            -filename (str): Trajectory file name.
+        Parameters
+        ----------
+        filename : str
+            Trajectory file name (formats: xyz).
+
+        Returns
+        -------
+        None
+            Writes molecule information to given file name.
+
         """
         with open(filename, 'w') as traj_file:
             if hasattr(self, 'headers'):
@@ -71,11 +113,16 @@ class Trajectory:
         """
         Get coordinates of molecule center at each frame.
 
-        Args:
-            - mass (bool): Calculate center of mass (True) or geometric center (False)
+        Parameters
+        ----------
+        mass : bool
+            Calculate center of mass (True) or geometric center (False).
 
-        Returns:
-            - ndarray: Molecule center coordinates for each frame.
+        Returns
+        -------
+        ndarray
+            Molecule center coordinates for each frame.
+
         """
         centers = np.empty((len(self.atoms), 3))
         for f, (frame_atoms, frame_coors) in enumerate(zip(self.atoms, self.coordinates)):
@@ -84,14 +131,18 @@ class Trajectory:
 
     def get_msd(self, coordinates, reference=0):
         """
-        Calculate mean squared displcement (MSD) for given 1D coordinates.
+        Calculate mean squared displacement (MSD) for given 1D coordinates.
 
-        Args:
-            - coordinates (ndarray): List of 1D coordinates
-            - reference (int): Index for reference frame (default: 0)
+        Parameters
+        ----------
+        coordinates : ndarray
+            List of 1D coordinates.
+        reference : int
+            Index for reference frame (default: 0).
 
-        Returns:
-            - float: Mean squared displacement
+        Returns
+        -------
+        float: Mean squared displacement
 
         Example (calculate MSD for the first atom in x direction for each frame):
             >>> traj.get_msd(traj.coordinates[:, 0, 0])
