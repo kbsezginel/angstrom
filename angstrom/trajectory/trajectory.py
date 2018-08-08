@@ -128,24 +128,3 @@ class Trajectory:
         for f, (frame_atoms, frame_coors) in enumerate(zip(self.atoms, self.coordinates)):
             centers[f] = get_molecule_center(frame_atoms, frame_coors, mass=mass)
         return centers
-
-    def get_msd(self, coordinates, reference=0):
-        """
-        Calculate mean squared displacement (MSD) for given 1D coordinates.
-
-        Parameters
-        ----------
-        coordinates : ndarray
-            List of 1D coordinates.
-        reference : int
-            Index for reference frame (default: 0).
-
-        Returns
-        -------
-        float: Mean squared displacement
-
-        Example (calculate MSD for the first atom in x direction for each frame):
-            >>> traj.get_msd(traj.coordinates[:, 0, 0])
-        """
-        ref_coor = coordinates[reference]
-        return np.average(np.power((coordinates - ref_coor), 2))
