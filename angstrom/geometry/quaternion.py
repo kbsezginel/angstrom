@@ -9,12 +9,18 @@ class Quaternion(object):
     """
     Quaternion class for quaternion operations and 3D rotations.
     """
-    def __init__(self, input):
-        """ Initialize Quaternion with a 4 element list -> [w, x, y, z] """
-        self.w = input[0]
-        self.x = input[1]
-        self.y = input[2]
-        self.z = input[3]
+    def __init__(self, param_list):
+        """ Initialize Quaternion with a 4 element list -> [w, x, y, z].
+
+        Parameters
+        ----------
+        param_list: list
+            Quaternion w, x, y, and z values respectively
+        """
+        self.w = param_list[0]
+        self.x = param_list[1]
+        self.y = param_list[2]
+        self.z = param_list[3]
 
     def __repr__(self):
         return "<Quaternion object w:%s x:%s y:%s z:%s>" % (self.w, self.x, self.y, self.z)
@@ -25,21 +31,44 @@ class Quaternion(object):
     def xyz(self):
         """
         Returns x, y, z values of the quaternion in list format.
+
+        Returns
+        -------
+        list
+            A list of x, y, and z values respectively
         """
         return [self.x, self.y, self.z]
 
     def np(self):
-        """ Returns numpy array if x, y, z values. """
+        """ Returns numpy array if x, y, z values.
+
+        Returns
+        -------
+        ndarray
+            A numpy array of x, y, and z values respectively
+        """
         return np.array([self.x, self.y, self.z])
 
     def __mul__(self, quat2):
         """
         Multiply quaternion by another.
 
-        Example usage::
-          >>> q1 = Quaternion([1, 2, 3, 4])
-          >>> q2 = Quaternion([2, 3, 4, 5])
-          >>> q1 * q2 -> <Quaternion object w:-36 x:6 y:12 z:12>
+        Parameters
+        ----------
+        quat2: Quaternion
+            The quaternion to multiply with
+
+        Returns
+        -------
+        Quaternion
+            The resulting Quaternion object from the multiplication
+
+        Examples
+        --------
+        >>> q1 = Quaternion([1, 2, 3, 4])
+        >>> q2 = Quaternion([2, 3, 4, 5])
+        >>> q1 * q2
+        <Quaternion object w:-36 x:6 y:12 z:12>
         """
         q1, q2 = self, quat2
         w3 = q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z
@@ -52,10 +81,22 @@ class Quaternion(object):
         """
         Divide one quaternion by another. Performs the operation as q1 * inverse q2.
 
-        Example usage::
-          >>> q1 = Quaternion([1, 2, 3, 4])
-          >>> q2 = Quaternion([2, 3, 4, 5])
-          >>> q1 / q2 -> <Quaternion object w:0.7407 x:0.0370 y:0.0 z:0.0741>
+        Parameters
+        ----------
+        quat2: Quaternion
+            The quaternion to divide with
+
+        Returns
+        -------
+        Quaternion
+            The resulting Quaternion object from the division
+
+        Examples
+        --------
+        >>> q1 = Quaternion([1, 2, 3, 4])
+        >>> q2 = Quaternion([2, 3, 4, 5])
+        >>> q1 / q2
+        <Quaternion object w:0.7407 x:0.0370 y:0.0 z:0.0741>
         """
         return self * quat2.inv()
 
@@ -63,6 +104,10 @@ class Quaternion(object):
         """
         Returns the inverse of the quaternion as a new quaternion.
 
+        Returns
+        -------
+        Quaternion
+            The inverse of the Quaternion object
         """
         norm = self.w ** 2 + self.x ** 2 + self.y ** 2 + self.z ** 2
         return Quaternion([self.w / norm, -self.x / norm, -self.y / norm, -self.z / norm])
@@ -73,10 +118,28 @@ class Quaternion(object):
         The direction of rotation is counter-clockwise given that axis is defined as p2 - p1.
         Rotation angle needs to be given in radians.
 
-        Example usage::
-         >>> Q = Quaternion([0, 1, 1, 1])
-         >>> Q = Q.rotation(Q.xyz(), [-2, 4, 6.1], [0.3, 1.2, -0.76], np.pi/6)
-         >>> [2.1192250600275795, 2.2773560513200133, 5.890236840657188]
+        Parameters
+        ----------
+        rotation_point: list
+            The point to rotate
+        axis_point1: list
+            Point 1 to define the axis of rotation
+        axis_point2: list
+            Point 2 to define the axis of rotation
+        rotation_angle: float
+            Rotation angle in radians
+
+        Returns
+        -------
+        Quaternion
+            Quaternion with rotated point
+
+        Examples
+        --------
+        >>> import numpy as np
+        >>> Q = Quaternion([0, 1, 1, 1])
+        >>> Q = Q.rotation(Q.xyz(), [-2, 4, 6.1], [0.3, 1.2, -0.76], np.pi/6)
+        [2.1192250600275795, 2.2773560513200133, 5.890236840657188]
         """
         i = axis_point2[0] - axis_point1[0]
         j = axis_point2[1] - axis_point1[1]

@@ -16,6 +16,16 @@ planes = {'xy': ([0, 0, 0], [1, 0, 0], [1, 1, 0]),
 class Plane:
     """ Plane object. Initialized by either giving 3 points or a string (ex: 'xy') for main planes."""
     def __init__(self, *args, size=1):
+        """ Initialize a Plane object.
+
+        Parameters
+        ----------
+        args: lists or string
+            Create a plane object using 3 points or a string
+            The string options are: 'xy', 'xz', 'yx', 'yz', 'zx', 'zy'
+        size: float
+            Size of the plane
+        """
         if len([*args]) == 3:
             p1, p2, p3 = [np.array(i) * size for i in args]
         elif str(*args) in planes.keys():
@@ -34,11 +44,15 @@ class Plane:
     def reflect(self, point):
         """ Get mirror image of a point through the plane of reflection.
 
-        Args:
-            - point (list): 3D point
+        Parameters
+        ----------
+        point: list
+            3D point to be reflected
 
-        Returns:
-            - ndarray: Mirror image of the point
+        Returns
+        -------
+        ndarray
+            Mirror image of the point
         """
         s0 = (self.a * point[0] + self.b * point[1] + self.c * point[2] - self.d)
         s0 /= (self.a**2 + self.b**2 + self.c**2)
@@ -52,10 +66,6 @@ class Plane:
     def grid(self, size, space=1):
         """Calculate grid points for the plane for given grid size and spacing.
 
-        Args:
-            - size (float): Grid size
-            - space (float): Grid point spacing
-
         Three points P1(x1, y1, z1), P2(x2, y2, z2), P3(x3, y3, z3)
             P2  o.....o.....o P3
                 o.....o.....o
@@ -64,8 +74,17 @@ class Plane:
             P1  o.....o.....o
                      Pm
 
-        Returns:
-            - ndarray: Grid points
+        Parameters
+        ----------
+        size: float
+            Grid size
+        space: float
+            Grid point spacing
+
+        Returns
+        -------
+        ndarray
+            Grid points
         """
         grid_points = []
         for m in np.arange(0, size + space, space):
@@ -77,5 +96,11 @@ class Plane:
         return np.array(grid_points)
 
     def get_center(self):
-        """ Get center point of the plane ."""
+        """ Get center point of the plane.
+
+        Returns
+        -------
+        ndarray
+            Center point
+        """
         return self.p1 + (self.p3 - self.p1) / 2
