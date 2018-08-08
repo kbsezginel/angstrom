@@ -8,14 +8,17 @@ import numpy as np
 class Quaternion(object):
     """
     Quaternion class for quaternion operations and 3D rotations.
+
     """
     def __init__(self, param_list):
-        """ Initialize Quaternion with a 4 element list -> [w, x, y, z].
+        """
+        Initialize Quaternion with a 4 element list -> [w, x, y, z].
 
         Parameters
         ----------
         param_list: list
-            Quaternion w, x, y, and z values respectively
+            Quaternion w, x, y, and z values respectively.
+
         """
         self.w = param_list[0]
         self.x = param_list[1]
@@ -35,17 +38,20 @@ class Quaternion(object):
         Returns
         -------
         list
-            A list of x, y, and z values respectively
+            A list of x, y, and z values respectively.
+
         """
         return [self.x, self.y, self.z]
 
     def np(self):
-        """ Returns numpy array if x, y, z values.
+        """
+        Returns numpy array if x, y, z values.
 
         Returns
         -------
         ndarray
-            A numpy array of x, y, and z values respectively
+            A numpy array of x, y, and z values respectively.
+
         """
         return np.array([self.x, self.y, self.z])
 
@@ -56,12 +62,12 @@ class Quaternion(object):
         Parameters
         ----------
         quat2: Quaternion
-            The quaternion to multiply with
+            The quaternion to multiply with.
 
         Returns
         -------
         Quaternion
-            The resulting Quaternion object from the multiplication
+            The resulting Quaternion object from the multiplication.
 
         Examples
         --------
@@ -69,6 +75,7 @@ class Quaternion(object):
         >>> q2 = Quaternion([2, 3, 4, 5])
         >>> q1 * q2
         <Quaternion object w:-36 x:6 y:12 z:12>
+
         """
         q1, q2 = self, quat2
         w3 = q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z
@@ -84,12 +91,12 @@ class Quaternion(object):
         Parameters
         ----------
         quat2: Quaternion
-            The quaternion to divide with
+            The quaternion to divide with.
 
         Returns
         -------
         Quaternion
-            The resulting Quaternion object from the division
+            The resulting Quaternion object from the division.
 
         Examples
         --------
@@ -97,6 +104,7 @@ class Quaternion(object):
         >>> q2 = Quaternion([2, 3, 4, 5])
         >>> q1 / q2
         <Quaternion object w:0.7407 x:0.0370 y:0.0 z:0.0741>
+
         """
         return self * quat2.inv()
 
@@ -107,7 +115,8 @@ class Quaternion(object):
         Returns
         -------
         Quaternion
-            The inverse of the Quaternion object
+            The inverse of the Quaternion object.
+
         """
         norm = self.w ** 2 + self.x ** 2 + self.y ** 2 + self.z ** 2
         return Quaternion([self.w / norm, -self.x / norm, -self.y / norm, -self.z / norm])
@@ -121,18 +130,18 @@ class Quaternion(object):
         Parameters
         ----------
         rotation_point: list
-            The point to rotate
+            The point to rotate.
         axis_point1: list
-            Point 1 to define the axis of rotation
+            Point 1 to define the axis of rotation.
         axis_point2: list
-            Point 2 to define the axis of rotation
+            Point 2 to define the axis of rotation.
         rotation_angle: float
-            Rotation angle in radians
+            Rotation angle in radians.
 
         Returns
         -------
         Quaternion
-            Quaternion with rotated point
+            Quaternion with rotated point.
 
         Examples
         --------
@@ -140,6 +149,7 @@ class Quaternion(object):
         >>> Q = Quaternion([0, 1, 1, 1])
         >>> Q = Q.rotation(Q.xyz(), [-2, 4, 6.1], [0.3, 1.2, -0.76], np.pi/6)
         [2.1192250600275795, 2.2773560513200133, 5.890236840657188]
+
         """
         i = axis_point2[0] - axis_point1[0]
         j = axis_point2[1] - axis_point1[1]

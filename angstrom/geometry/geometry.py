@@ -8,21 +8,23 @@ import periodictable
 
 
 def get_molecule_center(atoms, coordinates, mass=True):
-    """ Calculate center of mass or geometric center for given coordinates and atom names of a molecule.
+    """
+    Calculate center of mass or geometric center for given coordinates and atom names of a molecule.
 
     Parameters
     ----------
     atoms: ndarray
-        List of element names
+        List of element names.
     coordinates: ndarray
-        List of coordinates (2D list)
+        List of coordinates (2D list).
     mass: bool
-        Use atomic masses (True) or calculate geometric center (False)
+        Use atomic masses (True) or calculate geometric center (False).
 
     Returns
     -------
     ndarray
-        Center coordinate
+        Center coordinate.
+
     """
     if mass:
         masses = np.array([periodictable.elements.symbol(atom).mass for atom in atoms])
@@ -36,26 +38,28 @@ def get_molecule_center(atoms, coordinates, mass=True):
 
 
 def align_vectors(v1, v2, norm=True):
-    """ Calculates the rotation axis and angle to align two vectors (v1 to v2).
+    """
+    Calculates the rotation axis and angle to align two vectors (v1 to v2).
 
     Parameters
     ----------
     v1: ndarray
-        Vector 1
+        Vector 1.
     v2: ndarray
-        Vector 2
+        Vector 2,
     norm: bool
-        Normalize vectors (default: True)
+        Normalize vectors (default: True),
 
     Returns
     -------
     dict
-        Rotation axis and angle for aligning vectors
+        Rotation axis and angle for aligning vectors,
 
     Warns
     -----
     RuntimeWarning
         If v1 and v2 are already aligned (parallel). In this case the angle will be returned 0.
+
     """
     if norm:
         v1 = np.array(v1) / np.linalg.norm(v1)
