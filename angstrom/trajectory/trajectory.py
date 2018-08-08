@@ -4,7 +4,6 @@ Read, manipulate and analyze molecular trajectory files.
 """
 from .read import read_xyz_traj
 from .write import write_xyz_traj
-from .tools import non_periodic_coordinates
 from angstrom.geometry import get_molecule_center
 import numpy as np
 
