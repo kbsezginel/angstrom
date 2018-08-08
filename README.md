@@ -1,5 +1,14 @@
-[![Build Status](https://travis-ci.org/kbsezginel/angstrom.svg?branch=master)](https://travis-ci.org/kbsezginel/angstrom)
-[![codecov](https://codecov.io/gh/kbsezginel/angstrom/branch/master/graph/badge.svg)](https://codecov.io/gh/kbsezginel/angstrom)
+<p align="center">
+<a href="https://travis-ci.org/kbsezginel/angstrom">
+  <img src="https://travis-ci.org/kbsezginel/angstrom.svg?branch=master" alt="Travis CI"/>
+</a>
+<a href="https://ci.appveyor.com/project/kbsezginel/angstrom">
+  <img src="https://ci.appveyor.com/api/projects/status/lcj1f73iet2gt5up?svg=true" alt="AppVeyor"/>
+</a>
+<a href="https://codecov.io/gh/kbsezginel/angstrom">
+  <img src="https://codecov.io/gh/kbsezginel/angstrom/branch/master/graph/badge.svg" alt="Codecov"/>
+</a>
+</p>
 
 # Ångström
 A Python package for basic molecular operations with low-dependency and easy-integration.
