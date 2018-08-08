@@ -98,21 +98,3 @@ class Trajectory:
         """
         ref_coor = coordinates[reference]
         return np.average(np.power((coordinates - ref_coor), 2))
-
-    def non_periodic(self, simulation_box, dmin=0.5):
-        """ Convert periodic simulation trajectory to non-periodic trajectory.
-        *** ORTHORHOMBIC CELLS ONLY ***
-
-        Args:
-            - simulation_box (list): Dimensions of the simulation box -> [a, b, c]
-            - dmin (float): Minimum traveled distance for periodic image jump.
-                            If the distance change of a specific atom is bigger than (box_length * dmin)
-                            then the atom is assumed to jump to a periodic image.
-
-        Returns:
-            - Trajectory: Trajectory object with non-periodic coordinates
-        """
-        np_traj = Trajectory()
-        np_traj.atoms = self.atoms
-        np_traj.coordinates = non_periodic_coordinates(self.coordinates, simulation_box, dmin=dmin)
-        return np_traj
