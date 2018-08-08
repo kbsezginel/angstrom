@@ -7,7 +7,8 @@ from .cell import Cell
 
 
 def write_molecule(filename, atoms, coordinates, bonds=None, group=None, cell=None, header='angstrom'):
-    """ Write molecule file. Supprted formats -> (xyz | pdb | cif)
+    """
+    Write molecule file. Supprted formats -> (xyz | pdb | cif)
     The file format is extracted from the file extension.
 
     Parameters
@@ -31,6 +32,7 @@ def write_molecule(filename, atoms, coordinates, bonds=None, group=None, cell=No
     -------
     None
         Writes molecule information to given file name.
+
     """
     file_format = os.path.splitext(filename)[1].replace('.', '')
     with open(filename, 'w') as fileobj:
@@ -43,7 +45,8 @@ def write_molecule(filename, atoms, coordinates, bonds=None, group=None, cell=No
 
 
 def write_xyz(fileobj, atoms, coordinates, header='angstrom'):
-    """ Write given atomic coordinates to file object in xyz format.
+    """
+    Write given atomic coordinates to file object in xyz format.
 
     Parameters
     ----------
@@ -60,6 +63,7 @@ def write_xyz(fileobj, atoms, coordinates, header='angstrom'):
     -------
     None
         Creates a new .xyz file.
+
     """
     fileobj.write(str(len(coordinates)) + '\n')
     fileobj.write(header + '\n')
@@ -70,7 +74,8 @@ def write_xyz(fileobj, atoms, coordinates, header='angstrom'):
 
 
 def write_pdb(fileobj, atoms, coordinates, bonds=None, group=None, header='angstrom'):
-    """ Write given atomic coordinates to file object in pdb format.
+    """
+    Write given atomic coordinates to file object in pdb format.
 
     Parameters
     ----------
@@ -91,6 +96,7 @@ def write_pdb(fileobj, atoms, coordinates, bonds=None, group=None, header='angst
     -------
     None
         Creates a new .pdb file.
+
     """
     fileobj.write('HEADER    %s\n' % header)
     pdb_format = 'HETATM%5d%3s  M%4i %3i     %8.3f%8.3f%8.3f  1.00  0.00          %2s\n'
@@ -114,7 +120,8 @@ def write_pdb(fileobj, atoms, coordinates, bonds=None, group=None, header='angst
 
 
 def write_cif(fileobj, atoms, coordinates, cell=None, header='angstrom'):
-    """ Write given atomic coordinates to file in cif format.
+    """
+    Write given atomic coordinates to file in cif format.
 
     Parameters
     ----------
@@ -133,6 +140,7 @@ def write_cif(fileobj, atoms, coordinates, cell=None, header='angstrom'):
     -------
     None
         Creates a new .cif file.
+
     """
     if cell is None:
         cell = [1, 1, 1, 90, 90, 90]

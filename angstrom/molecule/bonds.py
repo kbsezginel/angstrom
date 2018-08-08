@@ -22,7 +22,8 @@ rcov = {'H': 0.32, 'He': 0.46, 'Li': 1.33, 'Be': 1.02, 'B': 0.85, 'C': 0.75, 'N'
 
 
 def get_bonds(atoms, coordinates, RADIUS_BUFFER=0.45, MIN_BOND_DISTANCE=0.16):
-    """Estimate molecular bonding by calculating interatomic distance.
+    """
+    Estimate molecular bonding by calculating interatomic distance.
     If two atoms are closer to each other than the sum of their covalent radii and RADIUS_BUFFER
     then the atoms are considered bonded.
     If atoms are closer to each other than MIN_BOND_DISTANCE then they are not bonded.

@@ -6,7 +6,8 @@ import numpy as np
 
 
 def read_xyz(filename):
-    """Read xyz file format.
+    """
+    Read xyz file format.
 
     Parameters
     ----------
@@ -18,6 +19,7 @@ def read_xyz(filename):
     dict
         atom names and coordinates:
         -> {'atoms': ['C', ...], 'coordinates': [[x1, y1, z1], ...]}.
+
     """
     with open(filename, 'r') as xyz_file:
         xyz_lines = xyz_file.readlines()
