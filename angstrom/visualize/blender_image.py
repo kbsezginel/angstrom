@@ -10,6 +10,21 @@ import sys
 def render_pdb(settings):
     """
     Render pdb file using Blender pdb reader.
+
+    Parameters
+    ----------
+    settings : dict
+        Blender render settings.
+
+    Returns
+    -------
+    None
+        This function is called by the Blender Python installation.
+
+    See Also
+    --------
+    render_settings: Detailed explanations of render settings and list of parameters.
+
     """
     # Delete the cube
     bpy.ops.object.delete(use_global=False)

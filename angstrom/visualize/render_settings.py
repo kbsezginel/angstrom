@@ -105,6 +105,7 @@ def get_blender_settings(executable='blender', render=True, save='', model='defa
     -------
     dict
         Blender render settings.
+
     """
     d = camera_distance
     VIEW = {'xy': dict(location=[0, 0, d], rotation=[0, 0, 0]),

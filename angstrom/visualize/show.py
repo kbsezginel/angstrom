@@ -10,19 +10,31 @@ import nglview
 
 
 def show(*molecules, arrange=True, nx=5, distance=(-10, -10), camera='perspective', caps=True, save=None):
-    """ Show molecule objects using nglview.
+    """
+    Show molecule objects using nglview.
 
-    Args:
-        - molecules: Any number Molecule objects.
-        - arrange (bool): Arrange structure positions (default: True).
-        - nx (int): Number of structures in x axis (horizontal).
-        - distance (tuple): Separation distance in x and y axes.
-        - camera: 'perspective' / 'orthographic'
-        - caps (bool): Make atom names all capital letters (required for nglview to assign correct color).
-        - save (str / None): Save visualized structure in pdb format as given filename.
+    Parameters
+    ----------
+    molecules : Molecule
+        Any number Molecule objects.
+    arrange : bool
+        Arrange structure positions (default: True).
+    nx : int
+        Number of structures in x axis (horizontal).
+    distance : tuple
+        Separation distance in x and y axes.
+    camera : str
+        Camera style -> 'perspective' / 'orthographic'.
+    caps : bool
+        Make atom names all capital letters (required for nglview to assign correct color).
+    save : str or None
+        Save visualized structure in pdb format as given filename.
 
-    Returns:
-        - view: nglview "view" object
+    Returns
+    -------
+    view
+        nglview "view" object.
+
     """
     atoms, coordinates, group_numbers = arrange_molecules(molecules, arrange=arrange, nx=nx, distance=distance, caps=caps)
 
