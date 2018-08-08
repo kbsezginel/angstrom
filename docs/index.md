@@ -6,7 +6,7 @@ A Python package for basic molecular operations with low-dependency and easy-int
 Ångström offers high quality molecular visualization from the command-line.
 It provides easy integration with visualization software such as:
 - [Blender](https://www.blender.org/)
-- [OpenBabel](http://openbabel.org/wiki/Main_Page), 
+- [OpenBabel](http://openbabel.org/wiki/Main_Page)
 - [VMD](http://www.ks.uiuc.edu/Research/vmd/)
 - [Nglview](https://github.com/arose/nglview) for visualization.
 
@@ -14,9 +14,6 @@ It provides easy integration with visualization software such as:
 Ångström is a Python package for geometric molecular operations, molecular visualization and animations.
 The purpose of Ångström is to be a lightweight and easily integrable package.
 This way it can be easily included in various simulation packages.
-
------------------------
-**Ångström is currently in development... Stay tuned**
 
 ## Installation
 You can install Ångström by cloning this repository as follows:
