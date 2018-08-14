@@ -31,6 +31,9 @@ python setup.py install
 
 Ångström will also be available through `pip` in near future.
 
+## Documentation
+Ångström documentation is available on [readthedocs](https://angstrom.readthedocs.io/en/latest/).
+
 ## Tests
 Unit tests are available using [pytest](https://docs.pytest.org/en/latest/).
 You can run the tests by executing `pytest` in the main repository.
