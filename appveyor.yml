@@ -37,4 +37,4 @@ install:
 build: false
 
 test_script:
-  - pytest -v --cov=angstrom angstrom\\tests
+  - pytest -v --cov=angstrom/
