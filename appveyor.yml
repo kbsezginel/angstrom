@@ -37,4 +37,4 @@ install:
 build: false
 
 test_script:
-  - pytest -v --cov=angstrom/
+  - pytest -v --cov=angstrom/ -m "not filecmptest"
