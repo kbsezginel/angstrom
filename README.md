@@ -8,6 +8,9 @@
 <a href="https://codecov.io/gh/kbsezginel/angstrom">
   <img src="https://codecov.io/gh/kbsezginel/angstrom/branch/master/graph/badge.svg" alt="Codecov"/>
 </a>
+<a href='https://angstrom.readthedocs.io/en/latest/?badge=latest'>
+    <img src='https://readthedocs.org/projects/angstrom/badge/?version=latest' alt='Documentation Status' />
+</a>
 </p>
 
 # Ångström
