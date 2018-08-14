@@ -5,6 +5,7 @@ Tests writing molecule object.
 from angstrom import Molecule
 import filecmp
 import os
+import pytest
 
 
 piyzaz_cif = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'piyzaz.cif')
@@ -22,8 +23,12 @@ piyzaz_coors = [[6.746250, 6.491582, 4.590242],
                 [11.243750, 3.894949, 0.584760]]
 
 
+@pytest.mark.filecmptest
 def test_write_cif_PIYZAZ():
-    """Tests writing cif formatted molecule file"""
+    """
+    Tests writing cif formatted molecule file
+    File comparison tests are OS dependent, they should only work in UNIX but not Windows.
+    """
     piyzaz = Molecule(atoms=piyzaz_atoms, coordinates=piyzaz_coors)
     test_file = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'piyzaz_test.cif')
     piyzaz.write(test_file, cell=piyzaz_cell_parameters, header='piyzaz')

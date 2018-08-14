@@ -6,17 +6,27 @@ import numpy as np
 
 
 def arrange_molecules(molecules, arrange=True, nx=5, distance=(-10, -10), caps=True):
-    """ Arrange molecules in a 2D grid for better visual representation.
+    """
+    Arrange molecules in a 2D grid for better visual representation.
 
-    Args:
-        - molecules (tuple): Molecule objects.
-        - arrange (bool): Arrange structure positions (default: True).
-        - nx (int): Number of structures in x axis (horizontal).
-        - distance (tuple): Separation distance in x and y axes.
-        - caps (bool): Make atom names all capital letters (required for nglview to assign correct color).
+    Parameters
+    ----------
+    molecules : tuple
+        Molecule objects.
+    arrange : bool
+        Arrange structure positions (default: True).
+    nx : int
+        Number of structures in x axis (horizontal).
+    distance : tuple
+        Separation distance in x and y axes.
+    caps : bool
+        Make atom names all capital letters (required for nglview to assign correct color).
 
-    Returns:
-        - tuple: Atom coordinates, atom names, and group (residue) numbers.
+    Returns
+    -------
+    tuple
+        Atom coordinates, atom names, and group (residue) numbers.
+
     """
     n_structures = len(molecules)
     if arrange:
@@ -36,15 +46,23 @@ def arrange_molecules(molecules, arrange=True, nx=5, distance=(-10, -10), caps=T
 
 
 def arrange_positions(n_structures, nx=5, distance=(10, 10)):
-    """ Calculate translation vectors to arrange positions of structures.
+    """
+    Calculate translation vectors to arrange positions of structures.
 
-    Args:
-        - n_structures (int): Total number of structures
-        - nx (int): Number of structures in x axis (horizontal)
-        - distance (tuple): Separation distance in x and y axes
+    Parameters
+    ----------
+    n_structures : int
+        Total number of structures.
+    nx : int
+        Number of structures in x axis (horizontal).
+    distance : tuple
+        Separation distance in x and y axes.
 
-    Returns:
-        - ndarray: Translation vectors to arrange structure positions.
+    Returns
+    -------
+    ndarray
+        Translation vectors to arrange structure positions.
+
     """
     n_structures_vertical = np.ceil(n_structures / nx)
     ylim = (n_structures_vertical - 1) * distance[1] / 2

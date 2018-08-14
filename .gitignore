@@ -1,6 +1,10 @@
 # User
 dev
 
+# GitHub Pages
+_site
+Gemfile.lock
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -48,6 +52,7 @@ nosetests.xml
 coverage.xml
 *.cover
 .hypothesis/
+.pytest_cache
 
 # Translations
 *.mo

@@ -7,19 +7,32 @@ from .cell import Cell
 
 
 def write_molecule(filename, atoms, coordinates, bonds=None, group=None, cell=None, header='angstrom'):
-    """ Write molecule file.
+    """
+    Write molecule file. Supprted formats -> (xyz | pdb | cif)
+    The file format is extracted from the file extension.
 
-    Args:
-        - filename (str): Molecule file name, file format extracted from file extension (formats: xyz | pdb | cif)
-        - atoms (list): List of atom names
-        - coordinates (list): List of atomic coordinates
-        - bonds (list): Atomic bonding (used in pdb format)
-        - header (str): Molecule file header
-        - group (list): Atom grouping (used in pdb format)
-        - cell (list): Unit cell parameters -> [a, b, c, alpha, beta, gamma] (used in cif format)
+    Parameters
+    ----------
+    filename : str
+        Molecule file name.
+    atoms : list
+        List of atom names.
+    coordinates : list
+        List of atomic coordinates.
+    bonds : list
+        Atomic bonding (used in pdb format).
+    group : list
+        Atom grouping (used in pdb format).
+    cell : list
+        Unit cell parameters -> [a, b, c, alpha, beta, gamma] (used in cif format).
+    header : str
+        Molecule file header.
 
-    Returns:
-        - Writes molecule information to given file name.
+    Returns
+    -------
+    None
+        Writes molecule information to given file name.
+
     """
     file_format = os.path.splitext(filename)[1].replace('.', '')
     with open(filename, 'w') as fileobj:
@@ -32,16 +45,25 @@ def write_molecule(filename, atoms, coordinates, bonds=None, group=None, cell=No
 
 
 def write_xyz(fileobj, atoms, coordinates, header='angstrom'):
-    """ Write given atomic coordinates to file object in xyz format
+    """
+    Write given atomic coordinates to file object in xyz format.
 
-    Args:
-        - fileobj (file object): File object for the xyz file
-        - atoms (list): List of atom names
-        - coordinates (list): List of atomic coordinates
-        - header (str): File header
+    Parameters
+    ----------
+    fileobj : file object
+        File object for the xyz file.
+    atoms : list
+        List of atom names.
+    coordinates : list
+        List of atomic coordinates.
+    header : str
+        File header.
 
-    Returns:
-        - None: Creates a new file
+    Returns
+    -------
+    None
+        Creates a new .xyz file.
+
     """
     fileobj.write(str(len(coordinates)) + '\n')
     fileobj.write(header + '\n')
@@ -52,18 +74,29 @@ def write_xyz(fileobj, atoms, coordinates, header='angstrom'):
 
 
 def write_pdb(fileobj, atoms, coordinates, bonds=None, group=None, header='angstrom'):
-    """ Write given atomic coordinates to file object in pdb format
+    """
+    Write given atomic coordinates to file object in pdb format.
 
-    Args:
-        - fileobj (file object): File object for the pdb file
-        - atoms (list): List of atom names
-        - coordinates (list): List of atomic coordinates
-        - bonds (list): Atom bonding
-        - group (list or None): Residue number for each atom
-        - header (str): File header
+    Parameters
+    ----------
+    fileobj : file object
+        File object for the pdb file.
+    atoms : list
+        List of atom names.
+    coordinates : list
+        List of atomic coordinates.
+    bonds : list
+        Atom bonding.
+    group : list or None
+        Residue number for each atom.
+    header : str
+        File header.
 
-    Returns:
-        - None: Creates a new file
+    Returns
+    -------
+    None
+        Creates a new .pdb file.
+
     """
     fileobj.write('HEADER    %s\n' % header)
     pdb_format = 'HETATM%5d%3s  M%4i %3i     %8.3f%8.3f%8.3f  1.00  0.00          %2s\n'
@@ -87,7 +120,28 @@ def write_pdb(fileobj, atoms, coordinates, bonds=None, group=None, header='angst
 
 
 def write_cif(fileobj, atoms, coordinates, cell=None, header='angstrom'):
-    """ Write given atomic coordinates to file in cif format """
+    """
+    Write given atomic coordinates to file in cif format.
+
+    Parameters
+    ----------
+    fileobj : file object
+        File object for the xyz file.
+    atoms : list
+        List of atom names.
+    coordinates : list
+        List of atomic coordinates.
+    cell : list
+        Unit cell parameters -> [a, b, c, alpha, beta, gamma].
+    header : str
+        File header.
+
+    Returns
+    -------
+    None
+        Creates a new .cif file.
+
+    """
     if cell is None:
         cell = [1, 1, 1, 90, 90, 90]
     else:

@@ -11,16 +11,25 @@ import os
 
 
 def render(molecule, img_file, renderer='blender', settings=None, verbose=False):
-    """ Render Molecule object
+    """
+    Render Molecule object.
 
-    Args:
-        - molecule (Molecule): Ångström Molecule object
-        - img_file (str): File name for the image file to be saved (use .svg for OpenBabel and .png for Blender)
-        - renderer (str): Rendering software ([blender] | openbabel)
-        - settings: Rendering settings
+    Parameters
+    ----------
+    molecule : Molecule
+        Ångström Molecule object.
+    img_file : str
+        File name for the image file to be saved (use .svg for OpenBabel and .png for Blender).
+    renderer : str
+        Rendering software ([blender] | openbabel).
+    settings : dict or None
+        Rendering settings.
 
-    Returns:
-        - Saves image file
+    Returns
+    -------
+    None
+        Saves image file.
+
     """
     if not hasattr(molecule, 'bonds'):
         molecule.get_bonds()
@@ -40,24 +49,48 @@ def render(molecule, img_file, renderer='blender', settings=None, verbose=False)
 
 
 def render_openbabel(mol_file, img_file, settings=openbabel_settings):
-    """ Render molecular images using OpenBabel
+    """
+    Render molecular images using OpenBabel.
 
-    Args:
-        - mol_file (str): Molecule file
-        - img_file (str): Image file (recommended file format: svg)
-        - settings (list): List of command line arguments
+    Parameters
+    ----------
+    mol_file : str
+        Molecule file.
+    img_file : str
+        Image file (recommended file format: svg).
+    settings : list
+        List of command line arguments.
+
+    Returns
+    -------
+    None
+        Saves image file.
+
     """
     command = ['obabel', '%s' % mol_file, '-O', '%s' % img_file] + settings
     subprocess.call(command)
 
 
 def render_blender(mol_file, img_file, settings, verbose=False):
-    """ Render molecular images using Blender
+    """
+    Render molecular images using Blender.
 
-    Args:
-        - mol_file (str): Molecule file in .pdb format
-        - img_file (str): Image file (recommended file format: png)
-        - settings (dict): Blender rendering settings
+    Parameters
+    ----------
+    mol_file : str
+        Molecule file in .pdb format.
+    img_file : str
+        Image file (recommended file format: png).
+    settings : dict
+        Blender rendering settings.
+    verbose : bool
+        Blender rendering script verbosity.
+
+    Returns
+    -------
+    None
+        Saves image file.
+
     """
     settings['output'] = img_file
     settings['pdb'] = {**{'filepath': mol_file}, **settings['pdb']}
@@ -75,12 +108,23 @@ def render_blender(mol_file, img_file, settings, verbose=False):
 
 
 def render_vmd(mol_file, img_file, settings, verbose=False):
-    """ Render molecular images using VMD
+    """
+    Render molecular images using VMD.
 
-    Args:
-        - mol_file (str): Molecule file
-        - img_file (str): Image file
-        - settings (str): VMD visualization state file
+    Parameters
+    ----------
+    mol_file : str
+        Molecule file.
+    img_file : str
+        Image file.
+    settings : str
+        VMD visualization state file.
+
+    Returns
+    -------
+    None
+        Saves image file.
+
     """
     input_file = open(settings, 'r')
     command = ['vmd', '-dispdev' 'text']

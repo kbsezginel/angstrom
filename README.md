@@ -1,5 +1,17 @@
-[![Build Status](https://travis-ci.org/kbsezginel/angstrom.svg?branch=master)](https://travis-ci.org/kbsezginel/angstrom)
-[![codecov](https://codecov.io/gh/kbsezginel/angstrom/branch/master/graph/badge.svg)](https://codecov.io/gh/kbsezginel/angstrom)
+<p align="center">
+<a href="https://travis-ci.org/kbsezginel/angstrom">
+  <img src="https://travis-ci.org/kbsezginel/angstrom.svg?branch=master" alt="Travis CI"/>
+</a>
+<a href="https://ci.appveyor.com/project/kbsezginel/angstrom">
+  <img src="https://ci.appveyor.com/api/projects/status/lcj1f73iet2gt5up?svg=true" alt="AppVeyor"/>
+</a>
+<a href="https://codecov.io/gh/kbsezginel/angstrom">
+  <img src="https://codecov.io/gh/kbsezginel/angstrom/branch/master/graph/badge.svg" alt="Codecov"/>
+</a>
+<a href='https://angstrom.readthedocs.io/en/latest/?badge=latest'>
+    <img src='https://readthedocs.org/projects/angstrom/badge/?version=latest' alt='Documentation Status' />
+</a>
+</p>
 
 # Ångström
 A Python package for basic molecular operations with low-dependency and easy-integration.
@@ -8,9 +20,6 @@ A Python package for basic molecular operations with low-dependency and easy-int
 Ångström is a Python package for geometric molecular operations, molecular visualization and trajectory analysis.
 The purpose of Ångström is to be a lightweight and easily integrable package.
 This way it can be easily included in various simulation packages.
-
------------------------
-**Ångström is currently in development... Stay tuned**
 
 ## Installation
 You can install Ångström by cloning this repository as follows:
@@ -21,6 +30,9 @@ python setup.py install
 ```
 
 Ångström will also be available through `pip` in near future.
+
+## Documentation
+Ångström documentation is available on [readthedocs](https://angstrom.readthedocs.io/en/latest/).
 
 ## Tests
 Unit tests are available using [pytest](https://docs.pytest.org/en/latest/).

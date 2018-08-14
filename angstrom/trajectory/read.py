@@ -7,14 +7,20 @@ import numpy as np
 
 
 def read_xyz_traj(filename):
-    """ Read xyz trajectory and return coordinates as a list.
-        Assumes number of atoms is constant.
+    """
+    Read xyz trajectory and return coordinates as a list.
+    Assumes number of atoms is constant.
 
-        Args:
-            - filename (str): Trajectory file in xyz format.
+    Parameters
+    ----------
+    filename : str
+        Trajectory file in xyz format.
 
-        Returns:
-            - dict: Trajectory dictionary with atoms, coordinates, timestep and xyz keys
+    Returns
+    -------
+    dict
+        Trajectory dictionary with 'atoms', 'coordinates', 'timestep' and 'xyz' keys.
+
     """
     with open(filename, 'r') as traj_file:
         traj = traj_file.readlines()

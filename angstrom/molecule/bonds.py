@@ -22,16 +22,33 @@ rcov = {'H': 0.32, 'He': 0.46, 'Li': 1.33, 'Be': 1.02, 'B': 0.85, 'C': 0.75, 'N'
 
 
 def get_bonds(atoms, coordinates, RADIUS_BUFFER=0.45, MIN_BOND_DISTANCE=0.16):
-    """Estimate molecular bonding.
+    """
+    Estimate molecular bonding by calculating interatomic distance.
+    If two atoms are closer to each other than the sum of their covalent radii and RADIUS_BUFFER
+    then the atoms are considered bonded.
+    If atoms are closer to each other than MIN_BOND_DISTANCE then they are not bonded.
+    The covalent radii for atoms are taken from Pyykkö et al.[1].
 
-    Args:
-        - atoms (list): List of atom names
-        - coordinates (list): List of atomic coordinates
-        - RADIUS_BUFFER (float): Atomic radius buffer (Å)
-        - MIN_BOND_DISTANCE (float): Minimum bonding distance (Å)
+    Parameters
+    ----------
+    atoms : list
+        List of atom names.
+    coordinates : list
+        List of atomic coordinates.
+    RADIUS_BUFFER : float
+        Atomic radius buffer (Å).
+    MIN_BOND_DISTANCE : float
+        Minimum bonding distance (Å).
 
-    Returns:
-         list: List of bonded atoms
+    Returns
+    -------
+    list
+        List of bonded atoms as tuples sorted according to atom index of the first atom.
+
+    References
+    ----------
+    .. [1] Pyykkö, Pekka, and Michiko Atsumi, *Molecular single‐bond covalent radii for elements 1–118.*
+    Chemistry–A European Journal 15.1 (**2009**): 186-197.
     """
     coors_z = list(enumerate(coordinates))
     coors_z = sorted(coors_z, key=lambda x: x[1][2])
