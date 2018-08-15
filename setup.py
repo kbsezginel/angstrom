@@ -42,4 +42,9 @@ setup(
         'Intended Audience :: Science/Research',
         'Programming Language :: Python :: 3',
     ],
+    entry_points={
+        'console_scripts': [
+            'angstrom-vis=angstrom.cli.angstrom_vis:main',
+        ]
+    }
 )
