@@ -1,6 +1,7 @@
 """
 --- Ångström ---
-Blender render adapter.
+Blender visualization adapter and configuration.
+Molecular visualization models for Blender.
 """
 import os
 import pickle
@@ -59,9 +60,12 @@ PI = 3.14159265359
 
 class Blender:
     """
-    Blender visualization configuration.
+    Blender visualization adapter and configuration.
     """
     def __init__(self):
+        """
+        Initializes Blender visualization adapter with default configuration.
+        """
         self.models = MODELS
         self.colors = COLORS
         self.config = self.configure()
@@ -78,7 +82,7 @@ class Blender:
         mol_file : str
             Molecule file name to read.
         img_file : str
-            Image file name to save.
+            Image file name to save ('png' file format is recommended).
         executable : str
             Path to blender executable (depends on OS).
         render : bool
