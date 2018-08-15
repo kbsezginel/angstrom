@@ -35,25 +35,36 @@ default_model = {'use_center': True,               # Position object to origin
                  'use_sticks_one_object_nr': 200   # Number of sticks to be grouped at once
                  }
 
-ball_and_stick = {'scale_ballradius': 0.5,
-                  'scale_distances': 1,
-                  'sticks_radius': 0.25}
+ball_and_stick_model = {'scale_ballradius': 0.5,
+                        'sticks_radius': 0.2
+                        }
 
-space_filling = {'scale_ballradius': 1,            # Scale factor for all atom radii
-                 'scale_distances': 1,             # Scale factor for all distances
-                 'atomradius': '2',                # Type of radius -> 0: Pre-defined | 1: Atomic radius | 2: van der Waals
-                 'use_sticks': False,              # Use bonds as cylinders
+space_filling_model = {'scale_ballradius': 1,
+                       'atomradius': '2',
+                       'use_sticks': False
+                       }
+
+stick_model = {'scale_ballradius': 0.0,
+               'sticks_radius': 0.2,
+               'use_sticks_type': '0'
+               }
+
+surface_model = {'ball': '2',
+                 'use_sticks': False
                  }
 
 MODELS = {'default': default_model,
-          'ball-and-stick': ball_and_stick,
-          'space-filling': space_filling
+          'ball_and_stick': ball_and_stick_model,
+          'space_filling': space_filling_model,
+          'stick': stick_model,
+          'surface': surface_model
           }
 
 COLORS = {'Carbon': (0.05, 0.05, 0.05),
           'Hydrogen': (1.00, 1.00, 1.00),
           'Nitrogen': (0.18, 0.34, 0.95),
-          'Oxygen': (0.70, 0.00, 0.00)}
+          'Oxygen': (0.70, 0.00, 0.00)
+          }
 
 PI = 3.14159265359
 
