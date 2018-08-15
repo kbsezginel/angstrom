@@ -40,14 +40,12 @@ def main():
                         help="Molecular representation model ([default] | ball_and_stick | space_filling | stick | surface)")
     parser.add_argument('--zoom', '-z', default=20, type=int, metavar='',
                         help="Image zoom. (default: 20)")
-    parser.add_argument('--view', '-v', default='xy', type=str, metavar='',
+    parser.add_argument('--view', default='xy', type=str, metavar='',
                         help="Camera view plane ([xy] | xz | yx | yz | zx | zy)")
     parser.add_argument('--distance', '-d', default=10, type=int, metavar='',
                         help="Camera distance from origin (default: 10)")
-    parser.add_argument('--perspective', '-cp', action='store_true', default=False,
-                        help="Use perspective camera  (default: False)")
-    parser.add_argument('--orthographic', '-co', action='store_true', default=True,
-                        help="Use orthographic camera  (default: True)")
+    parser.add_argument('--camera', '-c', default='ORTHO', type=str, metavar='',
+                        help="Camera type ([ORTHO] | PERSP)")
     parser.add_argument('--brightness', '-b', default=1.0, type=float, metavar='',
                         help="Brightness [environment lightning] (default: 1.0)")
     parser.add_argument('--lamp', '-l', default=2.0, type=float, metavar='',
@@ -58,18 +56,16 @@ def main():
                         help="Don't render the image (default: False)")
     parser.add_argument('--save', '-s', default='', type=str, metavar='',
                         help="Save .blend file [ex: molecule.blend] (default: don't save)")
-    parser.add_argument('--verbose', action='store_true', default=False,
+    parser.add_argument('--verbose', '-v', action='store_true', default=False,
                         help="Verbosity  (default: False)")
 
     args = parser.parse_args()
     # Set options --------------------------------------------------------------------------------------
     blend = Blender()
     blend.configure(mol_file=args.molecule, img_file='%s.png' % os.path.splitext(args.molecule)[0],
-                    model=args.model,
-                    save=args.save, render=(not args.no_render), verbose=args.verbose,
-                    camera_zoom=args.zoom, camera_type='ORTHO', camera_view=args.view, camera_distance=args.distance,
+                    model=args.model, save=args.save, render=(not args.no_render), verbose=args.verbose,
+                    camera_zoom=args.zoom, camera_type=args.camera.upper(), camera_view=args.view, camera_distance=args.distance,
                     brightness=args.brightness, lamp=args.lamp, resolution=[int(i) for i in args.resolution.split('x')])
-
     blend.render_image()
 
 
