@@ -1,0 +1,8 @@
+coverage:
+  precision: 2
+  round: down
+  range: "70...90"
+  ignore:
+    - setup.py
+    - tests/.*
+    - angstrom/visualize/.*
