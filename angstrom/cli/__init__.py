@@ -1,0 +1,4 @@
+"""
+--- Ångström ---
+Command line interface.
+"""
