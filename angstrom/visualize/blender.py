@@ -194,6 +194,18 @@ class Blender:
         if os.path.exists(self.config['pickle']):
             os.remove(self.config['pickle'])
 
+    def sequence_images(self):
+        """
+        Sequence a list of images and create a video using Blender.
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        """
+        pass
+
     def print_config(self):
         """
         Print Blender render configuration.
