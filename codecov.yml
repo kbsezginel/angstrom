@@ -6,3 +6,4 @@ coverage:
     - setup.py
     - tests/.*
     - angstrom/visualize/.*
+    - angstrom/cli/.*
