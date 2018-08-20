@@ -147,8 +147,9 @@ class Blender:
                                  rotation=VIEW[camera_view]['rotation'],
                                  type=camera_type, zoom=camera_zoom),
                   'brightness': brightness, 'lamp': lamp, 'resolution': resolution,
-                  'colors': colors, 'verbose': verbose, 'render': render,
-                  'executable': executable, 'script': script, 'pickle': pickle, 'save': save}
+                  'colors': colors, 'background_color': background_color,
+                  'verbose': verbose, 'render': render, 'save': save,
+                  'executable': executable, 'script': script, 'pickle': pickle}
         self.config = config
         return config
 
