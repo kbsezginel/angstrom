@@ -5,7 +5,7 @@ Visualization tools for arranging molecule positions and more.
 import numpy as np
 
 
-def arrange_molecules(molecules, arrange=True, nx=5, distance=(-10, -10), caps=True):
+def arrange_molecules(molecules, arrange=True, nx=5, distance=(-10, -10)):
     """
     Arrange molecules in a 2D grid for better visual representation.
 
@@ -19,8 +19,6 @@ def arrange_molecules(molecules, arrange=True, nx=5, distance=(-10, -10), caps=T
         Number of structures in x axis (horizontal).
     distance : tuple
         Separation distance in x and y axes.
-    caps : bool
-        Make atom names all capital letters (required for nglview to assign correct color).
 
     Returns
     -------
@@ -37,10 +35,6 @@ def arrange_molecules(molecules, arrange=True, nx=5, distance=(-10, -10), caps=T
     coordinates = np.concatenate([i.coordinates + v for i, v in zip(molecules, translation_vectors)])
     atoms = np.concatenate([i.atoms for i in molecules])
     group_numbers = [i for i in range(n_structures) for j in range(len(molecules[i].atoms))]
-
-    # nglview require atom names in all caps to color them properly
-    if caps:
-        atoms = [name.upper() for name in atoms]
 
     return atoms, coordinates, group_numbers
 

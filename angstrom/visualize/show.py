@@ -36,7 +36,11 @@ def show(*molecules, arrange=True, nx=5, distance=(-10, -10), camera='perspectiv
         nglview "view" object.
 
     """
-    atoms, coordinates, group_numbers = arrange_molecules(molecules, arrange=arrange, nx=nx, distance=distance, caps=caps)
+    atoms, coordinates, group_numbers = arrange_molecules(molecules, arrange=arrange, nx=nx, distance=distance)
+
+    # nglview require atom names in all caps to color them properly
+    if caps:
+        atoms = [name.upper() for name in atoms]
 
     if save is None:
         temp_pdb_file = tempfile.NamedTemporaryFile(mode='w+', suffix='.pdb')
