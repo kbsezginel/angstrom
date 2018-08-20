@@ -82,7 +82,8 @@ class Blender:
         self.config = self.configure()
 
     def configure(self, mol_file='', img_file='', executable='blender', render=True, save='',
-                  model='default', colors=COLORS, resolution=(1920, 1080), brightness=1.0, lamp=2.0,
+                  model='default', colors=COLORS, background_color=None,
+                  resolution=(1920, 1080), brightness=1.0, lamp=2.0,
                   camera_zoom=20, camera_distance=10, camera_view='xy', camera_type='ORTHO',
                   verbose=False, script=IMG_SCRIPT, pickle='temp-config.pkl'):
         """
@@ -98,12 +99,20 @@ class Blender:
             Path to blender executable (depends on OS).
         render : bool
             Render image switch.
-        output : str
-            Output image file name.
         save : str
             Saves .blend file to given filename.
         model : str
             Molecule model (default | ball-and-stick | space_filling).
+        colors : dict
+            Atom colors in RGB (0 - 1) | ex: {'Carbon': (0.1, 0.1, 0.1), 'Oxygen': (0.7, 0.0, 0.0)}.
+        background_color : tuple or None
+            Background color in RGB (0 - 1) | ex: (1.0, 1.0, 1.0) for white. None for transparent.
+        resolution : tuple
+            Image resolution (default: 1920 x 1080).
+        brightness : float
+            Brightness [environment lightning] (default: 1.0).
+        lamp : float
+            Lamp strength (default: 2).
         camera_zoom : float
             Camera zoom / focal length (default: 20).
         camera_distance : float
@@ -112,14 +121,6 @@ class Blender:
             Camera view plane (xy | xz | yx | yz | zx | zy).
         camera_type : str
             Camera type (ORTHO | PERSP).
-        resolution : tuple
-            Image resolution (default: 1920 x 1080).
-        brightness : float
-            Brightness [environment lightning] (default: 1.0).
-        lamp : float
-            Lamp strength (default: 2).
-        colors : dict
-            Atom colors in RGB | ex: {'Carbon': (0.1, 0.1, 0.1), 'Oxygen': (0.7, 0.0, 0.0)}.
         verbose : bool
             Blender subprocess verbosity.
         script : str
@@ -170,7 +171,8 @@ class Blender:
 
     def render_image(self):
         """
-        Render image using Blender.
+        Render image using Blender:
+            >>> blender --background --python blender_image.py -- temp-config.pkl
 
         Parameters
         ----------
