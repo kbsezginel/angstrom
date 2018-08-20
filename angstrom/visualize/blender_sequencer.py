@@ -43,10 +43,7 @@ def sequence_images(settings):
     scene.render.image_settings.file_format = settings['file_format']
     scene.render.image_settings.quality = 100
     scene.frame_end = len(settings['images'])
-
-    # Set video resolution from the first image
-    im = Image.open(settings['images'][0])
-    scene.render.resolution_x, scene.render.resolution_y = im.size
+    scene.render.resolution_x, scene.render.resolution_y = settings['resolution']
     scene.render.resolution_percentage = 100
 
     # Save .blend file
