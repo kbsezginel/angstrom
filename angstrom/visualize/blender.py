@@ -10,6 +10,7 @@ from pprint import pprint
 
 
 IMG_SCRIPT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'blender_image.py')
+SEQ_SCRIPT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'blender_sequencer.py')
 
 default_model = {'use_center': True,               # Position object to origin
                  'use_camera': False,              # Add camera
@@ -170,9 +171,9 @@ class Blender:
         with open(config_file, 'wb') as handle:
             pickle.dump(self.config, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    def render_image(self):
+    def run(self):
         """
-        Render image using Blender:
+        Run Blender in the background using subprocess and following command:
             >>> blender --background --python blender_image.py -- temp-config.pkl
 
         Parameters
@@ -182,7 +183,7 @@ class Blender:
         Returns
         -------
         None
-            Renders image file.
+            Runs Blender Python script.
         """
         self.write_config(self.config['pickle'])
         command = ['blender', '--background', '--python', self.config['script'], '--', self.config['pickle']]
@@ -193,18 +194,6 @@ class Blender:
                 print("Stdout:\n\n%s\nStderr:\n%s" % (stdout, stderr))
         if os.path.exists(self.config['pickle']):
             os.remove(self.config['pickle'])
-
-    def sequence_images(self):
-        """
-        Sequence a list of images and create a video using Blender.
-
-        Parameters
-        ----------
-
-        Returns
-        -------
-        """
-        pass
 
     def print_config(self):
         """
