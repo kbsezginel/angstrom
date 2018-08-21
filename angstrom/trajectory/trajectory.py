@@ -5,6 +5,7 @@ Read, manipulate and analyze molecular trajectory files.
 from .read import read_xyz_traj
 from .write import write_xyz_traj
 from angstrom.geometry import get_molecule_center
+from angstrom import Molecule
 import numpy as np
 
 
@@ -35,6 +36,7 @@ class Trajectory:
         else:
             self.atoms = []
             self.coordinates = []
+        self.current_frame = 0
 
     def __repr__(self):
         """
@@ -68,6 +70,33 @@ class Trajectory:
         new_traj = Trajectory(atoms=np.append(self.atoms, traj.atoms, axis=0),
                               coordinates=np.append(self.coordinates, traj.coordinates, axis=0))
         return new_traj
+
+    def __getitem__(self, i):
+        """
+        Indexing method. Returns a Molecule object for given index (frame).
+
+        """
+        return Molecule(atoms=self.atoms[i], coordinates=self.coordinates[i])
+
+    def __iter__(self):
+        """
+        Initialize iterator, reset frame index.
+
+        """
+        self.current_frame = 0
+        return self
+
+    def __next__(self):
+        """
+        Returns the next frame in Trajectory as a Molecule object.
+
+        """
+        if self.current_frame >= np.shape(self.coordinates)[0]:
+            raise StopIteration
+
+        next_mol = self[self.current_frame]
+        self.current_frame += 1
+        return next_mol
 
     def read(self, filename):
         """
