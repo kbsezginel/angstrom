@@ -6,7 +6,6 @@ import pickle
 import bpy
 import sys
 import os
-from PIL import Image
 
 
 def sequence_images(settings):
