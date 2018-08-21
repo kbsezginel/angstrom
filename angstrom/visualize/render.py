@@ -51,11 +51,11 @@ def render(molecule, img_file, renderer='blender', verbose=False):
         renderer.config['pdb']['filepath'] = temp_pdb_file.name
         renderer.config['output'] = img_file
         renderer.config['verbose'] = verbose
-        renderer.render_image()
+        renderer.run()
     elif renderer.__class__.__name__ == 'OpenBabel':
         print('Rendering %s with OpenBabel -> %s' % (molecule.name, img_file))
         renderer.verbose = verbose
-        renderer.render_image(temp_pdb_file.name, img_file)
+        renderer.run(temp_pdb_file.name, img_file)
     else:
         print('Rendering engine not detected!')
     temp_pdb_file.close()
