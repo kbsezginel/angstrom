@@ -69,7 +69,7 @@ def main():
                     camera_zoom=args.zoom, camera_type=args.camera.upper(), camera_view=args.view,
                     camera_distance=args.distance, background_color=args.bcolor,
                     brightness=args.brightness, lamp=args.lamp, resolution=[int(i) for i in args.resolution.split('x')])
-    blend.render_image()
+    blend.run()
 
 
 if __name__ == '__main__':
