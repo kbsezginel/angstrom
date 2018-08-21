@@ -91,7 +91,7 @@ class Trajectory:
         Returns the next frame in Trajectory as a Molecule object.
 
         """
-        if self.current_frame >= np.shape(self.coordinates)[0]:
+        if self.current_frame >= len(self):
             raise StopIteration
 
         next_mol = self[self.current_frame]
