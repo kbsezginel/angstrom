@@ -28,6 +28,7 @@ class Trajectory:
             File name to read molecule file (formats: xyz).
 
         """
+        self.name = 'Trajectory'
         if atoms is not None and coordinates is not None:
             self.atoms = atoms
             self.coordinates = coordinates
@@ -113,6 +114,7 @@ class Trajectory:
             Assigns 'coordinates', 'atoms', and 'headers' attributes.
 
         """
+        self.name = os.path.splitext(os.path.basename(filename))[0]
         traj = read_xyz_traj(filename)
         self.atoms, self.coordinates, self.headers = traj['atoms'], traj['coordinates'], traj['headers']
 
