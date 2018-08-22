@@ -53,7 +53,7 @@ def sequence_images(settings):
 
     # Video settings
     scene.render.fps = settings['fps']
-    scene.render.image_settings.file_format = settings['file_format']
+    scene.render.image_settings.file_format = settings['vid_format']
     scene.render.image_settings.quality = 100
     scene.frame_end = len(settings['images'])
     scene.render.resolution_x, scene.render.resolution_y = settings['resolution']
@@ -64,7 +64,7 @@ def sequence_images(settings):
         bpy.ops.wm.save_as_mainfile(filepath=settings['save'])
 
     if settings['render']:
-        scene.render.filepath = os.path.join(os.path.dirname(settings['images'][0]), 'angstrom')
+        scene.render.filepath = settings['vid_file']
         bpy.ops.render.render(animation=True)
 
 
