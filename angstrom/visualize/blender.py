@@ -67,6 +67,8 @@ COLORS = {'Carbon': (0.05, 0.05, 0.05),
           'Oxygen': (0.70, 0.00, 0.00)
           }
 
+SCRIPTS = {'img': IMG_SCRIPT, 'seq': SEQ_SCRIPT}
+
 PI = 3.14159265359
 
 
@@ -82,11 +84,13 @@ class Blender:
         self.colors = COLORS
         self.config = self.configure()
 
-    def configure(self, mol_file='', img_file='', executable='blender', render=True, save='',
+    def configure(self, mol_file='', img_file='', img_format='PNG',
+                  images=[], vid_file='', vid_format='AVI_JPEG',
+                  script='img', render=True, save='',
                   model='default', colors=COLORS, background_color=None,
                   resolution=(1920, 1080), brightness=1.0, lamp=2.0,
                   camera_zoom=20, camera_distance=10, camera_view='xy', camera_type='ORTHO',
-                  verbose=False, script=IMG_SCRIPT, pickle='temp-config.pkl'):
+                  verbose=False, pickle='temp-config.pkl', executable='blender'):
         """
         Get Blender image rendering settings.
 
@@ -96,8 +100,18 @@ class Blender:
             Molecule file name to read.
         img_file : str
             Image file name to save ('png' file format is recommended).
-        executable : str
-            Path to blender executable (depends on OS).
+        img_format : str
+            Image file format ([PNG] | JPEG | TIFF | BMP and more)
+        images : list
+            List of image paths for sequencer.
+        vid_file : str
+            Video file name (sequencer only).
+        vid_format : str
+            Video file format ([AVI_JPEG] | AVI_RAW | FFMPEG | H264 | XVID)
+        script : str
+            Python script to run ([img] | seq).
+                - img: Renders image of a molecule using pdb reader.
+                - seq: Sequence images to create a video.
         render : bool
             Render image switch.
         save : str
@@ -124,10 +138,10 @@ class Blender:
             Camera type (ORTHO | PERSP).
         verbose : bool
             Blender subprocess verbosity.
-        script : str
-            Python script to render the image.
         pickle : str
             Pickle file for communicating settings with Blender.
+        executable : str
+            Path to blender executable (depends on OS).
 
         Returns
         -------
@@ -143,14 +157,16 @@ class Blender:
                 'zx': dict(location=[0, d, 0], rotation=[PI / 2, -PI / 2, PI]),
                 'zy': dict(location=[-d, 0, 0], rotation=[PI / 2, -PI / 2, -PI / 2])}
 
-        config = {'output': img_file, 'pdb': {**{'filepath': mol_file}, **self.models[model]},
+        config = {'pdb': {**{'filepath': mol_file}, **self.models[model]},
+                  'img_file': img_file, 'img_format': img_format,
+                  'vid_file': vid_file, 'vid_format': vid_format, 'images': images,
                   'camera': dict(location=VIEW[camera_view]['location'],
                                  rotation=VIEW[camera_view]['rotation'],
                                  type=camera_type, zoom=camera_zoom),
                   'brightness': brightness, 'lamp': lamp, 'resolution': resolution,
                   'colors': colors, 'background_color': background_color,
                   'verbose': verbose, 'render': render, 'save': save,
-                  'executable': executable, 'script': script, 'pickle': pickle}
+                  'executable': executable, 'script': SCRIPTS[script], 'pickle': pickle}
         self.config = config
         return config
 
