@@ -85,7 +85,7 @@ class Blender:
         self.config = self.configure()
 
     def configure(self, mol_file='', img_file='', img_format='PNG',
-                  images=[], vid_file='', vid_format='AVI_JPEG',
+                  images=[], vid_file='', vid_format='AVI_JPEG', fps=10,
                   script='img', render=True, save='',
                   model='default', colors=COLORS, background_color=None,
                   resolution=(1920, 1080), brightness=1.0, lamp=2.0,
@@ -108,6 +108,8 @@ class Blender:
             Video file name (sequencer only).
         vid_format : str
             Video file format ([AVI_JPEG] | AVI_RAW | FFMPEG | H264 | XVID)
+        fps : int
+            Frame per second for the video.
         script : str
             Python script to run ([img] | seq).
                 - img: Renders image of a molecule using pdb reader.
@@ -159,7 +161,7 @@ class Blender:
 
         config = {'pdb': {**{'filepath': mol_file}, **self.models[model]},
                   'img_file': img_file, 'img_format': img_format,
-                  'vid_file': vid_file, 'vid_format': vid_format, 'images': images,
+                  'vid_file': vid_file, 'vid_format': vid_format, 'images': images, 'fps': fps,
                   'camera': dict(location=VIEW[camera_view]['location'],
                                  rotation=VIEW[camera_view]['rotation'],
                                  type=camera_type, zoom=camera_zoom),
