@@ -74,7 +74,8 @@ def render_pdb(settings):
         bpy.ops.wm.save_as_mainfile(filepath=settings['save'])
     if settings['render']:
         # Set the output file and name it!
-        bpy.data.scenes['Scene'].render.filepath = settings['output']
+        bpy.context.scene.file_format = settings['img_format']
+        bpy.data.scene.render.filepath = settings['img_file']
         # Render
         bpy.ops.render.render(write_still=True)
 
