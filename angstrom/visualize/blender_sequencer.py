@@ -16,6 +16,20 @@ def sequence_images(settings):
     ----------
     settings : dict
         Blender sequencer settings.
+            - images : list
+                List of image paths to sequence.
+            - background_color : tuple
+                Background color for the video.
+            - fps : int
+                Frame per secoind.
+            - file_format : str
+                Video file format (AVI_JPEG | FFMPEG).
+            - resolution : tuple
+                Video resolution.
+            - save : str
+                Save .blend file. Empty string to not save.
+            - render : bool
+                Render video.
 
     Returns
     -------
