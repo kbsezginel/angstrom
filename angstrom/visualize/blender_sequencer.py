@@ -22,8 +22,10 @@ def sequence_images(settings):
                 Background color for the video.
             - fps : int
                 Frame per secoind.
-            - file_format : str
+            - vid_format : str
                 Video file format (AVI_JPEG | FFMPEG).
+            - vid_file : str
+                Video file name.
             - resolution : tuple
                 Video resolution.
             - save : str
