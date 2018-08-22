@@ -7,6 +7,7 @@ from .write import write_xyz_traj
 from angstrom.geometry import get_molecule_center
 from angstrom import Molecule
 import numpy as np
+import os
 
 
 class Trajectory:
