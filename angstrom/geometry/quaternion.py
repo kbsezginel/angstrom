@@ -121,7 +121,7 @@ class Quaternion(object):
         norm = self.w ** 2 + self.x ** 2 + self.y ** 2 + self.z ** 2
         return Quaternion([self.w / norm, -self.x / norm, -self.y / norm, -self.z / norm])
 
-    def rotation(self, rotation_point, axis_point1, axis_point2, rotation_angle):
+    def rotation(self, rotation_point, rotation_axis, rotation_angle):
         """
         Rotation of a point around an axis defined by two points in 3D space.
         The direction of rotation is counter-clockwise given that axis is defined as p2 - p1.
@@ -131,10 +131,8 @@ class Quaternion(object):
         ----------
         rotation_point: list
             The point to rotate.
-        axis_point1: list
-            Point 1 to define the axis of rotation.
-        axis_point2: list
-            Point 2 to define the axis of rotation.
+        rotation_axis: tuple
+            Tuple of 3D points defining the axis of rotation.
         rotation_angle: float
             Rotation angle in radians.
 
@@ -151,6 +149,7 @@ class Quaternion(object):
         [2.1192250600275795, 2.2773560513200133, 5.890236840657188]
 
         """
+        axis_point1, axis_point2 = rotation_axis
         i = axis_point2[0] - axis_point1[0]
         j = axis_point2[1] - axis_point1[1]
         k = axis_point2[2] - axis_point1[2]
