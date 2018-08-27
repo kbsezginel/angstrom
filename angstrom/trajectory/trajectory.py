@@ -15,7 +15,7 @@ class Trajectory:
     Reading and analyzing trajectories in xyz format.
 
     """
-    def __init__(self, atoms=None, coordinates=None, read=None):
+    def __init__(self, atoms=None, coordinates=None, read=None, molecule=None):
         """
         Create a trajectory object.
 
@@ -27,6 +27,8 @@ class Trajectory:
             List of atomic positions of the molecule for each frame.
         read : str or None
             File name to read molecule file (formats: xyz).
+        molecule : Molecule
+            Create a Trajectory with 1 frame from a Molecule object.
 
         """
         self.name = 'Trajectory'
@@ -35,6 +37,10 @@ class Trajectory:
             self.coordinates = coordinates
         elif read is not None:
             self.read(read)
+        elif molecule is not None:
+            self.atoms = np.array([molecule.atoms])
+            self.coordinates = np.array([molecule.coordinates])
+            self.name = molecule.name
         else:
             self.atoms = []
             self.coordinates = []
