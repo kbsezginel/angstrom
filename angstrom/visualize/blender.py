@@ -204,7 +204,7 @@ class Blender:
             Runs Blender Python script.
         """
         self.write_config(self.config['pickle'])
-        command = ['blender', '--background', '--python', self.config['script'], '--', self.config['pickle']]
+        command = [self.config['executable'], '--background', '--python', self.config['script'], '--', self.config['pickle']]
         with open(os.devnull, 'w') as null:
             blend = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = blend.stdout.decode(), blend.stderr.decode()
