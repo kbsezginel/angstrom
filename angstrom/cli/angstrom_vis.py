@@ -38,6 +38,8 @@ def main():
     # Optional arguments
     parser.add_argument('--model', '-m', default='default', type=str, metavar='',
                         help="Molecular representation model ([default] | ball_and_stick | space_filling | stick | surface)")
+    parser.add_argument('--exe', '-x', default='blender', type=str, metavar='',
+                        help="Blender executable path")
     parser.add_argument('--zoom', '-z', default=20, type=int, metavar='',
                         help="Image zoom. (default: 20)")
     parser.add_argument('--view', default='xy', type=str, metavar='',
@@ -64,7 +66,8 @@ def main():
     args = parser.parse_args()
     # Set options --------------------------------------------------------------------------------------
     blend = Blender()
-    blend.configure(mol_file=args.molecule, img_file='%s.png' % os.path.splitext(args.molecule)[0],
+    img_file = os.path.join(os.getcwd(), '%s.png' % os.path.splitext(os.path.basename(args.molecule))[0])
+    blend.configure(mol_file=args.molecule, img_file=img_file, executable=args.exe,
                     model=args.model, save=args.save, render=(not args.no_render), verbose=args.verbose,
                     camera_zoom=args.zoom, camera_type=args.camera.upper(), camera_view=args.view,
                     camera_distance=args.distance, background_color=args.bcolor,
