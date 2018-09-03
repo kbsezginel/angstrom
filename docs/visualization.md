@@ -57,6 +57,9 @@ from angstrom.visualize.blender import Blender
 # Mac OS example
 blend = Blender()
 blend.config['executable'] = './blender.app/Contents/MacOS/blender'
+
+# Windows example
+blend.config['executable'] = 'C:\\Program Files\\Blender Foundation\\Blender\\blender.exe'
 ```
 
 If you want to permanently change the executable then you can modify the source code.
