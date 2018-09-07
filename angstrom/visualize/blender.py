@@ -4,6 +4,7 @@ Blender visualization adapter and configuration.
 Molecular visualization models for Blender.
 """
 import os
+import yaml
 import pickle
 import subprocess
 from pprint import pprint
@@ -189,6 +190,46 @@ class Blender:
         with open(config_file, 'wb') as handle:
             pickle.dump(self.config, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
+
+    def read_config(self, config_file):
+        """
+        Read config yaml file.
+
+        Parameters
+        ----------
+        config_file : str
+            Yaml file name.
+
+        Returns
+        -------
+        None
+            Configures Blender object.
+
+        Notes
+        -----
+        The 'script' variable in the config file is changed to the path of the actual script after
+        reading the config. This is to make sure correct path is selected. In the config file
+        user can simply write 'img' or 'vid' to select image or video rendering. 
+        """
+        with open(config_file, 'r') as f:
+            self.config = yaml.load(f)
+        self.config['script'] = SCRIPTS[self.config['script']]
+
+    def print_config(self):
+        """
+        Print Blender render configuration.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+            Prints configuration.
+        """
+        pprint(self.config)
+
     def run(self):
         """
         Run Blender in the background using subprocess and following command:
@@ -212,18 +253,3 @@ class Blender:
                 print("Stdout:\n\n%s\nStderr:\n%s" % (stdout, stderr))
         if os.path.exists(self.config['pickle']):
             os.remove(self.config['pickle'])
-
-    def print_config(self):
-        """
-        Print Blender render configuration.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
-            Prints configuration.
-        """
-        pprint(self.config)
