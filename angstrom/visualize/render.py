@@ -12,7 +12,7 @@ import pickle
 import os
 
 
-def render(render_obj, output, renderer='blender', verbose=False):
+def render(render_obj, output='angstrom', renderer='blender', verbose=False):
     """
     Render Molecule object.
 
@@ -140,3 +140,4 @@ def render_video(trajectory, vid_file, renderer, verbose=False):
         for img in images:
             if os.path.exists(img):
                 os.remove(img)
+        renderer.configure()
