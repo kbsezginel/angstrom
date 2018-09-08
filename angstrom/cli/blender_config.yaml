@@ -1,0 +1,50 @@
+img_file: ''                     # Image file name
+img_format: 'PNG'                # image file format
+vid_file: ''                     # Video file name
+vid_format: 'AVI_JPEG'           # Video file format
+images: []                       # List of images for video sequencer (video only)
+fps: 10                          # Frame per second (for video only)
+script: 'img'                    # Script type ('img' | 'vid')
+render: true                     # Render image
+save: ''                         # Save .blend file as (empty for not saving)
+background_color: null           # Background color in RGB (null for transparent)
+resolution: [1920, 1080]         # Image resolution
+brightness: 1.0                  # Environmental lightning
+lamp: 2.0                        # Lamp brightness
+verbose: true                    # Verbosity of Blender
+pickle: 'temp-config.pkl'        # Temporary pickle file
+executable: 'blender'            # Blender executable (see documentation for setup)
+camera:
+  location: [0, 0, 10]           # Camera location (x, y, z)
+  rotation: [0, 0, 0]            # Camera rotation in degrees
+  type: 'ORTHO'                  # Camera type ('ORTHO' | 'PERSP')
+  zoom: 20                       # Camera zoom (scale)
+colors:                          # RGB colors for atoms (all values btw 0 - 1)
+  Carbon: [0.05, 0.05, 0.05]     # Currently all atoms of the same type are colored the same
+  Hydrogen: [1.00, 1.00, 1.00]
+  Nitrogen: [0.18, 0.34, 0.95]
+  Oxygen: [0.70, 0.00, 0.00]
+pdb:
+  filepath: ''                   # PDB file to be rendered
+  use_center: true               # Position object to origin
+  use_camera: false              # Add camera
+  use_lamp: false                # Add lamp
+  ball: '0'                      # Type of ball -> 0: NURBS | 1: Mesh | 2: Meta
+  mesh_azimuth: 32               # Number of sectors (azimuth)
+  mesh_zenith: 32                # Number of sectors (zenith)
+  scale_ballradius: 0.5          # Scale factor for all atom radii
+  scale_distances: 1             # Scale factor for all distances
+  atomradius: '2'                # Type of radius -> 0: Pre-defined | 1: Atomic radius | 2: van der Waals
+  use_sticks: true               # Use bonds as cylinders
+  use_sticks_type: '0'           # Sticks type -> 0: Dupliverts | 1: Skin | 2: Normal
+  sticks_subdiv_view: 2          # Number of subdivisions (view)
+  sticks_subdiv_render: 2        # Number of subdivisions (render)
+  sticks_sectors: 20             # Number of sectors of a stick
+  sticks_radius: 0.25            # Radius of a stick
+  sticks_unit_length: 0.05       # Length of the unit of a stick in Angstrom
+  use_sticks_color: true         # The sticks appear in the color of the atoms
+  use_sticks_smooth: true        # The sticks are round (sectors are not visible)
+  use_sticks_bonds: false        # Show double and tripple bonds.
+  sticks_dist: 1.1               # Distance between sticks measured in stick diameter (min:1 / max:3)
+  use_sticks_one_object: true    # All sticks are one object
+  use_sticks_one_object_nr: 200  # Number of sticks to be grouped at once
