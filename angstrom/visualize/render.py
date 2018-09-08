@@ -133,7 +133,8 @@ def render_video(trajectory, vid_file, renderer, verbose=False):
             img_file = os.path.join(vid_dir, '%i.png' % idx)
             render_image(mol, img_file, renderer)
             images.append(img_file)
-        renderer.configure(images=images, vid_file=vid_file, script='seq', verbose=verbose, background_color=(1, 1, 1))
+        renderer.configure(images=images, vid_file=vid_file, script='seq', verbose=verbose,
+                           executable=renderer.config['executable'], background_color=(1, 1, 1))
         print('Rendering %s video with Blender -> %s' % (trajectory.name, vid_file))
         renderer.run()
         # Remove all images
