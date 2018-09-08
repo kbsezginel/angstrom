@@ -27,7 +27,7 @@ def main():
         """,
         epilog="""
     Example:
-    > python angstrom.py my_molecule.pdb
+    > angstrom-vis my_molecule.pdb
     would generate my_molecule.png file.
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter)
