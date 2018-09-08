@@ -77,13 +77,16 @@ class Blender:
     """
     Blender visualization adapter and configuration.
     """
-    def __init__(self):
+    def __init__(self, read=None):
         """
         Initializes Blender visualization adapter with default configuration.
         """
         self.models = MODELS
         self.colors = COLORS
-        self.config = self.configure()
+        if read is not None:
+            self.read_config(read)
+        else:
+            self.config = self.configure()
 
     def configure(self, mol_file='', img_file='', img_format='PNG',
                   images=[], vid_file='', vid_format='AVI_JPEG', fps=10,
@@ -209,7 +212,7 @@ class Blender:
         -----
         The 'script' variable in the config file is changed to the path of the actual script after
         reading the config. This is to make sure correct path is selected. In the config file
-        user can simply write 'img' or 'vid' to select image or video rendering. 
+        user can simply write 'img' or 'vid' to select image or video rendering.
         """
         with open(config_file, 'r') as f:
             self.config = yaml.load(f)
