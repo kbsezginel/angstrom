@@ -72,7 +72,7 @@ def main():
                         help="Blender executable path")
     parser.add_argument('--video', '-vid', action='store_true', default=False,
                         help="Render video.")
-    parser.add_argument('--rotate', '-rot', default=False, type=int, metavar='', nargs=5,
+    parser.add_argument('--rotate', '-rot', default=[0], type=int, metavar='', nargs=5,
                         help="Rotate molecule -> degrees x y z (axis) frames. (ex: 360 0 0 1 50)")
     parser.add_argument('--no-center', action='store_true', default=False,
                         help="Center molecule to origin.")
