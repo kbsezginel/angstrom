@@ -57,6 +57,9 @@ from angstrom.visualize.blender import Blender
 # Mac OS example
 blend = Blender()
 blend.config['executable'] = './blender.app/Contents/MacOS/blender'
+
+# Windows example
+blend.config['executable'] = 'C:\\Program Files\\Blender Foundation\\Blender\\blender.exe'
 ```
 
 If you want to permanently change the executable then you can modify the source code.
@@ -122,8 +125,21 @@ render(mol, 'molecule.svg', renderer=ob)
 Rendering Animations
 --------------------
 
-### Blender
+### Making a gif (Linux)
 
+#### From a list of images:
+```
+convert -delay 20 -loop 0 *.jpg my_gif.gif
+```
+where `-delay` is the time between each frame in 10 ms. So `-delay 20` means there would be
+`0.2 seconds` between each frame.
+
+#### From a video:
+```
+ffmpeg -i my_video.avi -r 25 -f image2pipe -vcodec ppm - | convert -delay 4 -loop 0 - my_gif.gif
+```
+
+See more info [here](https://askubuntu.com/questions/648603/how-to-create-an-animated-gif-from-mp4-video-via-command-line).
 ### VMD
 
 ```

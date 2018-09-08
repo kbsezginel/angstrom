@@ -17,7 +17,7 @@ class OpenBabel:
         self.config = ['-xS', '-xd', 'xb', 'none']
         self.verbose = False
 
-    def render_image(self, mol_file, img_file):
+    def run(self, mol_file, img_file):
         """
         Render image file using OpenBabel.
 

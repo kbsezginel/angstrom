@@ -59,8 +59,13 @@ def render_pdb(settings):
     bpy.context.scene.render.resolution_y = settings['resolution'][1]
     bpy.context.scene.render.resolution_percentage = 100
 
-    # Turn off sky/background
-    bpy.context.scene.render.layers["RenderLayer"].use_sky = False
+    # Set sky/background
+    if settings['background_color'] is None:
+        bpy.context.scene.render.alpha_mode = 'TRANSPARENT'
+    elif len(settings['background_color']) == 3:
+        bpy.context.scene.render.alpha_mode = 'SKY'
+        bpy.context.scene.world.horizon_color = settings['background_color']
+
     # Turn on environmental lighting
     bpy.context.scene.world.light_settings.use_environment_light = True
     bpy.context.scene.world.light_settings.environment_energy = settings['brightness']
@@ -69,7 +74,8 @@ def render_pdb(settings):
         bpy.ops.wm.save_as_mainfile(filepath=settings['save'])
     if settings['render']:
         # Set the output file and name it!
-        bpy.data.scenes['Scene'].render.filepath = settings['output']
+        bpy.context.scene.render.image_settings.file_format = settings['img_format']
+        bpy.context.scene.render.filepath = settings['img_file']
         # Render
         bpy.ops.render.render(write_still=True)
 

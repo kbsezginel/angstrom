@@ -4,12 +4,14 @@ Blender visualization adapter and configuration.
 Molecular visualization models for Blender.
 """
 import os
+import yaml
 import pickle
 import subprocess
 from pprint import pprint
 
 
 IMG_SCRIPT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'blender_image.py')
+SEQ_SCRIPT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'blender_sequencer.py')
 
 default_model = {'use_center': True,               # Position object to origin
                  'use_camera': False,              # Add camera
@@ -66,6 +68,8 @@ COLORS = {'Carbon': (0.05, 0.05, 0.05),
           'Oxygen': (0.70, 0.00, 0.00)
           }
 
+SCRIPTS = {'img': IMG_SCRIPT, 'seq': SEQ_SCRIPT}
+
 PI = 3.14159265359
 
 
@@ -81,10 +85,13 @@ class Blender:
         self.colors = COLORS
         self.config = self.configure()
 
-    def configure(self, mol_file='', img_file='', executable='blender', render=True, save='',
-                  model='default', colors=COLORS, resolution=(1920, 1080), brightness=1.0, lamp=2.0,
+    def configure(self, mol_file='', img_file='', img_format='PNG',
+                  images=[], vid_file='', vid_format='AVI_JPEG', fps=10,
+                  script='img', render=True, save='',
+                  model='default', colors=COLORS, background_color=None,
+                  resolution=(1920, 1080), brightness=1.0, lamp=2.0,
                   camera_zoom=20, camera_distance=10, camera_view='xy', camera_type='ORTHO',
-                  verbose=False, script=IMG_SCRIPT, pickle='temp-config.pkl'):
+                  verbose=False, pickle='temp-config.pkl', executable='blender'):
         """
         Get Blender image rendering settings.
 
@@ -94,16 +101,36 @@ class Blender:
             Molecule file name to read.
         img_file : str
             Image file name to save ('png' file format is recommended).
-        executable : str
-            Path to blender executable (depends on OS).
+        img_format : str
+            Image file format ([PNG] | JPEG | TIFF | BMP and more)
+        images : list
+            List of image paths for sequencer.
+        vid_file : str
+            Video file name (sequencer only).
+        vid_format : str
+            Video file format ([AVI_JPEG] | AVI_RAW | FFMPEG | H264 | XVID)
+        fps : int
+            Frame per second for the video.
+        script : str
+            Python script to run ([img] | seq).
+                - img: Renders image of a molecule using pdb reader.
+                - seq: Sequence images to create a video.
         render : bool
             Render image switch.
-        output : str
-            Output image file name.
         save : str
             Saves .blend file to given filename.
         model : str
             Molecule model (default | ball-and-stick | space_filling).
+        colors : dict
+            Atom colors in RGB (0 - 1) | ex: {'Carbon': (0.1, 0.1, 0.1), 'Oxygen': (0.7, 0.0, 0.0)}.
+        background_color : tuple or None
+            Background color in RGB (0 - 1) | ex: (1.0, 1.0, 1.0) for white. None for transparent.
+        resolution : tuple
+            Image resolution (default: 1920 x 1080).
+        brightness : float
+            Brightness [environment lightning] (default: 1.0).
+        lamp : float
+            Lamp strength (default: 2).
         camera_zoom : float
             Camera zoom / focal length (default: 20).
         camera_distance : float
@@ -112,20 +139,12 @@ class Blender:
             Camera view plane (xy | xz | yx | yz | zx | zy).
         camera_type : str
             Camera type (ORTHO | PERSP).
-        resolution : tuple
-            Image resolution (default: 1920 x 1080).
-        brightness : float
-            Brightness [environment lightning] (default: 1.0).
-        lamp : float
-            Lamp strength (default: 2).
-        colors : dict
-            Atom colors in RGB | ex: {'Carbon': (0.1, 0.1, 0.1), 'Oxygen': (0.7, 0.0, 0.0)}.
         verbose : bool
             Blender subprocess verbosity.
-        script : str
-            Python script to render the image.
         pickle : str
             Pickle file for communicating settings with Blender.
+        executable : str
+            Path to blender executable (depends on OS).
 
         Returns
         -------
@@ -141,13 +160,16 @@ class Blender:
                 'zx': dict(location=[0, d, 0], rotation=[PI / 2, -PI / 2, PI]),
                 'zy': dict(location=[-d, 0, 0], rotation=[PI / 2, -PI / 2, -PI / 2])}
 
-        config = {'output': img_file, 'pdb': {**{'filepath': mol_file}, **self.models[model]},
+        config = {'pdb': {**{'filepath': mol_file}, **self.models[model]},
+                  'img_file': img_file, 'img_format': img_format,
+                  'vid_file': vid_file, 'vid_format': vid_format, 'images': images, 'fps': fps,
                   'camera': dict(location=VIEW[camera_view]['location'],
                                  rotation=VIEW[camera_view]['rotation'],
                                  type=camera_type, zoom=camera_zoom),
                   'brightness': brightness, 'lamp': lamp, 'resolution': resolution,
-                  'colors': colors, 'verbose': verbose, 'render': render,
-                  'executable': executable, 'script': script, 'pickle': pickle, 'save': save}
+                  'colors': colors, 'background_color': background_color,
+                  'verbose': verbose, 'render': render, 'save': save,
+                  'executable': executable, 'script': SCRIPTS[script], 'pickle': pickle}
         self.config = config
         return config
 
@@ -168,28 +190,30 @@ class Blender:
         with open(config_file, 'wb') as handle:
             pickle.dump(self.config, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    def render_image(self):
+
+    def read_config(self, config_file):
         """
-        Render image using Blender.
+        Read config yaml file.
 
         Parameters
         ----------
-        None
+        config_file : str
+            Yaml file name.
 
         Returns
         -------
         None
-            Renders image file.
+            Configures Blender object.
+
+        Notes
+        -----
+        The 'script' variable in the config file is changed to the path of the actual script after
+        reading the config. This is to make sure correct path is selected. In the config file
+        user can simply write 'img' or 'vid' to select image or video rendering. 
         """
-        self.write_config(self.config['pickle'])
-        command = ['blender', '--background', '--python', self.config['script'], '--', self.config['pickle']]
-        with open(os.devnull, 'w') as null:
-            blend = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            stdout, stderr = blend.stdout.decode(), blend.stderr.decode()
-            if self.config['verbose']:
-                print("Stdout:\n\n%s\nStderr:\n%s" % (stdout, stderr))
-        if os.path.exists(self.config['pickle']):
-            os.remove(self.config['pickle'])
+        with open(config_file, 'r') as f:
+            self.config = yaml.load(f)
+        self.config['script'] = SCRIPTS[self.config['script']]
 
     def print_config(self):
         """
@@ -205,3 +229,27 @@ class Blender:
             Prints configuration.
         """
         pprint(self.config)
+
+    def run(self):
+        """
+        Run Blender in the background using subprocess and following command:
+            >>> blender --background --python blender_image.py -- temp-config.pkl
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+            Runs Blender Python script.
+        """
+        self.write_config(self.config['pickle'])
+        command = [self.config['executable'], '--background', '--python', self.config['script'], '--', self.config['pickle']]
+        with open(os.devnull, 'w') as null:
+            blend = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            stdout, stderr = blend.stdout.decode(), blend.stderr.decode()
+            if self.config['verbose']:
+                print("Stdout:\n\n%s\nStderr:\n%s" % (stdout, stderr))
+        if os.path.exists(self.config['pickle']):
+            os.remove(self.config['pickle'])

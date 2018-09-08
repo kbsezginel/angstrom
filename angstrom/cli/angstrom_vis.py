@@ -27,7 +27,7 @@ def main():
         """,
         epilog="""
     Example:
-    > python angstrom.py my_molecule.pdb
+    > angstrom-vis my_molecule.pdb
     would generate my_molecule.png file.
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -38,6 +38,8 @@ def main():
     # Optional arguments
     parser.add_argument('--model', '-m', default='default', type=str, metavar='',
                         help="Molecular representation model ([default] | ball_and_stick | space_filling | stick | surface)")
+    parser.add_argument('--exe', '-x', default='blender', type=str, metavar='',
+                        help="Blender executable path")
     parser.add_argument('--zoom', '-z', default=20, type=int, metavar='',
                         help="Image zoom. (default: 20)")
     parser.add_argument('--view', default='xy', type=str, metavar='',
@@ -50,8 +52,10 @@ def main():
                         help="Brightness [environment lightning] (default: 1.0)")
     parser.add_argument('--lamp', '-l', default=2.0, type=float, metavar='',
                         help="Lamp energy (default: 2.0)")
-    parser.add_argument('-resolution', '-r', default='1920x1080', type=str, metavar='',
+    parser.add_argument('--resolution', '-r', default='1920x1080', type=str, metavar='',
                         help="Image resolution (WIDTHxHEIGHT) (default: 1920x1080)")
+    parser.add_argument('--bcolor', '-bc', default=None, type=float, metavar='', nargs='+',
+                        help="Background color in RGB (ex: 1.0 1.0 1.0 for white | default: transparent)")
     parser.add_argument('--no-render', '-nr', action='store_true', default=False,
                         help="Don't render the image (default: False)")
     parser.add_argument('--save', '-s', default='', type=str, metavar='',
@@ -62,11 +66,13 @@ def main():
     args = parser.parse_args()
     # Set options --------------------------------------------------------------------------------------
     blend = Blender()
-    blend.configure(mol_file=args.molecule, img_file='%s.png' % os.path.splitext(args.molecule)[0],
+    img_file = os.path.join(os.getcwd(), '%s.png' % os.path.splitext(os.path.basename(args.molecule))[0])
+    blend.configure(mol_file=args.molecule, img_file=img_file, executable=args.exe,
                     model=args.model, save=args.save, render=(not args.no_render), verbose=args.verbose,
-                    camera_zoom=args.zoom, camera_type=args.camera.upper(), camera_view=args.view, camera_distance=args.distance,
+                    camera_zoom=args.zoom, camera_type=args.camera.upper(), camera_view=args.view,
+                    camera_distance=args.distance, background_color=args.bcolor,
                     brightness=args.brightness, lamp=args.lamp, resolution=[int(i) for i in args.resolution.split('x')])
-    blend.render_image()
+    blend.run()
 
 
 if __name__ == '__main__':

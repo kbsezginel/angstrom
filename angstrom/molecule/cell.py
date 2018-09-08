@@ -198,14 +198,14 @@ class Cell:
             center_trans_vec = [0, 0, 0]
 
         # Calculate translation vectors for each cell
-        translation_vectors = []
+        self.translation_vectors = []
         for a_rep in range(replication[0]):
             for b_rep in range(replication[1]):
                 for c_rep in range(replication[2]):
                     a_trans = a_v[0] * a_rep + b_v[0] * b_rep + c_v[0] * c_rep - center_trans_vec[0]
                     b_trans = a_v[1] * a_rep + b_v[1] * b_rep + c_v[1] * c_rep - center_trans_vec[1]
                     c_trans = a_v[2] * a_rep + b_v[2] * b_rep + c_v[2] * c_rep - center_trans_vec[2]
-                    translation_vectors.append([a_trans, b_trans, c_trans])
+                    self.translation_vectors.append([a_trans, b_trans, c_trans])
 
         # Create new cell
         supcellpar = [self.a * replication[0], self.b * replication[1], self.c * replication[2]]
@@ -215,7 +215,7 @@ class Cell:
         supcell_coordinates = np.empty((0, 3))
 
         # Calculate supercell coordinates
-        for trans_vec in translation_vectors:
+        for trans_vec in self.translation_vectors:
             supcell_atoms = np.concatenate((supcell_atoms, atoms))
             supcell_coordinates = np.concatenate((supcell_coordinates, coordinates + trans_vec))
         return supcell, supcell_atoms, supcell_coordinates

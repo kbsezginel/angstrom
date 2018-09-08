@@ -205,7 +205,7 @@ class Molecule:
         """
         self.coordinates += vector
 
-    def rotate(self, axis_point1, axis_point2, angle, center=False, mass=True):
+    def rotate(self, axis, angle, center=False, mass=True):
         """
         Rotate molecule around an axis defined by two point by a given angle in degrees.
         The direction of rotation is counter-clockwise given that axis is defined as p2 - p1.
@@ -214,15 +214,13 @@ class Molecule:
         This will prevent the molecule from moving after rotation.
 
         Example (rotate around y-axis by 90 degrees):
-            >>> molecule.rotate([0, 0, 0], [0, 1, 0], np.pi)
+            >>> molecule.rotate(([0, 0, 0], [0, 1, 0]), np.pi)
         This would rotate the molecule around y-axis by 90 degrees counter-clockwise.
 
         Parameters
         ----------
-        axis_point1 : list
-            3D coordinates for the first point that defines axis of rotation.
-        axis_point2 : list
-            3D coordinates for the second point that defines axis of rotation.
+        axis: tuple
+            Tuple of 3D points defining the axis of rotation.
         angle : float
             Degree of rotation (radians).
         center : bool
@@ -239,7 +237,7 @@ class Molecule:
         if center:
             current_center = self.get_center(mass=mass)
         Q = Quaternion([0, 1, 1, 1])
-        self.coordinates = np.array([Q.rotation(coor, axis_point1, axis_point2, angle).np() for coor in self.coordinates])
+        self.coordinates = np.array([Q.rotation(coor, axis, angle).np() for coor in self.coordinates])
         if center:
             self.center(current_center, mass=mass)
 
@@ -294,7 +292,7 @@ class Molecule:
 
         """
         alignment = align_vectors(mol_vector, align_vector)
-        self.rotate([0, 0, 0], alignment['axis'], alignment['angle'], center=center, mass=mass)
+        self.rotate(([0, 0, 0], alignment['axis']), alignment['angle'], center=center, mass=mass)
 
     def set_cell(self, cellpar):
         """

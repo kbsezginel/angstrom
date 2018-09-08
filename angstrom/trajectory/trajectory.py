@@ -5,7 +5,9 @@ Read, manipulate and analyze molecular trajectory files.
 from .read import read_xyz_traj
 from .write import write_xyz_traj
 from angstrom.geometry import get_molecule_center
+from angstrom import Molecule
 import numpy as np
+import os
 
 
 class Trajectory:
@@ -13,7 +15,7 @@ class Trajectory:
     Reading and analyzing trajectories in xyz format.
 
     """
-    def __init__(self, atoms=None, coordinates=None, read=None):
+    def __init__(self, atoms=None, coordinates=None, read=None, molecule=None):
         """
         Create a trajectory object.
 
@@ -25,16 +27,24 @@ class Trajectory:
             List of atomic positions of the molecule for each frame.
         read : str or None
             File name to read molecule file (formats: xyz).
+        molecule : Molecule
+            Create a Trajectory with 1 frame from a Molecule object.
 
         """
+        self.name = 'Trajectory'
         if atoms is not None and coordinates is not None:
             self.atoms = atoms
             self.coordinates = coordinates
         elif read is not None:
             self.read(read)
+        elif molecule is not None:
+            self.atoms = np.array([molecule.atoms])
+            self.coordinates = np.array([molecule.coordinates])
+            self.name = molecule.name
         else:
             self.atoms = []
             self.coordinates = []
+        self.current_frame = 0
 
     def __repr__(self):
         """
@@ -69,6 +79,33 @@ class Trajectory:
                               coordinates=np.append(self.coordinates, traj.coordinates, axis=0))
         return new_traj
 
+    def __getitem__(self, i):
+        """
+        Indexing method. Returns a Molecule object for given index (frame).
+
+        """
+        return Molecule(atoms=self.atoms[i], coordinates=self.coordinates[i])
+
+    def __iter__(self):
+        """
+        Initialize iterator, reset frame index.
+
+        """
+        self.current_frame = 0
+        return self
+
+    def __next__(self):
+        """
+        Returns the next frame in Trajectory as a Molecule object.
+
+        """
+        if self.current_frame >= len(self):
+            raise StopIteration
+
+        next_mol = self[self.current_frame]
+        self.current_frame += 1
+        return next_mol
+
     def read(self, filename):
         """
         Read xyz formatted trajectory file.
@@ -84,6 +121,7 @@ class Trajectory:
             Assigns 'coordinates', 'atoms', and 'headers' attributes.
 
         """
+        self.name = os.path.splitext(os.path.basename(filename))[0]
         traj = read_xyz_traj(filename)
         self.atoms, self.coordinates, self.headers = traj['atoms'], traj['coordinates'], traj['headers']
 
