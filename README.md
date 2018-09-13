@@ -13,7 +13,8 @@
 </a>
 </p>
 
-# Ångström
+<p align="center"><img src="https://raw.githubusercontent.com/kbsezginel/angstrom/master/docs/assets/img/angstrom-logo.png"></p>
+
 Ångström is a Python package for geometric molecular operations, molecular visualization and animations.
 The purpose of Ångström is to be a lightweight and easily integrable package.
 This way it can be easily included in various simulation packages.
