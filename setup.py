@@ -15,8 +15,7 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     install_requires=['numpy',
-                      'periodictable',
-                      'nglview'],
+                      'periodictable'],
     extras_require={
         'docs': [
             'sphinx',
@@ -30,6 +29,7 @@ setup(
             'pytest-pep8',
             'tox',
         ],
+        'notebook-vis': ['nglview']
     },
     tests_require=[
         'pytest',
