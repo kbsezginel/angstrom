@@ -6,6 +6,7 @@ sudo: false
 python:
   - "3.5"
   - "3.6"
+  - "3.7"
 
 before_install:
   - uname -a
@@ -15,6 +16,7 @@ before_install:
 
 install:
   - pip install pytest pytest-cov codecov
+  - pip install --upgrade pytest
 
 before_script:
   - python -V
