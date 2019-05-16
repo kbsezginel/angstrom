@@ -10,6 +10,7 @@ from angstrom.geometry import get_molecule_center, align_vectors
 from angstrom.geometry.quaternion import Quaternion
 from angstrom.geometry.plane import Plane
 import os
+import logging
 import numpy as np
 import periodictable
 
@@ -69,6 +70,22 @@ class Molecule:
                            coordinates=np.append(self.coordinates, mol.coordinates, axis=0))
         new_mol.name = '%s+%s' % (self.name, mol.name)
         return new_mol
+
+    def delete(self, atom_ids):
+        """
+        Delete a list of atoms with given indices.
+
+        Parameters
+        ----------
+        atom_ids : list
+            List of atom indices to delete.
+
+        """
+        if all([i < len(self.atoms) for i in atom_ids]) and all([i >= 0 for i in atom_ids]):
+            self.atoms = np.delete(self.atoms, atom_ids)
+            self.coordinates = np.delete(self.coordinates, atom_ids, axis=0)
+        else:
+            logging.error('Atom ids out of bounds, skipping deletion.')
 
     def read(self, filename):
         """
