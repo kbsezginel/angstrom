@@ -5,6 +5,8 @@ Molecule class for Ångström Python package.
 from .read import read_xyz
 from .write import write_molecule
 from .bonds import get_bonds
+from .angles import get_angles
+from .dihedrals import get_dihedrals
 from .cell import Cell
 from angstrom.geometry import get_molecule_center, align_vectors
 from angstrom.geometry.quaternion import Quaternion
@@ -139,18 +141,24 @@ class Molecule:
     def get_bonds(self):
         """
         Estimate molecular bonding.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
-            Assigns 'bonds' attribute.
-
         """
         self.bonds = get_bonds(self.atoms, self.coordinates)
+
+    def get_angles(self):
+        """
+        Iterate over bonds to get angles.
+        """
+        if not hasattr(self, 'bonds'):
+            self.get_bonds()
+        self.angles = get_angles(self.bonds)
+
+    def get_dihedrals(self):
+        """
+        Iterate over bonds to get dihedrals.
+        """
+        if not hasattr(self, 'bonds'):
+            self.get_bonds()
+        self.dihedrals = get_dihedrals(self.bonds)
 
     def get_molecular_weight(self):
         """

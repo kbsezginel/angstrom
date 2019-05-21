@@ -1,3 +1,7 @@
+"""
+--- Ångström ---
+Tests estimating molecular dihedrals.
+"""
 from angstrom.molecule.dihedrals import get_dihedrals
 
 
