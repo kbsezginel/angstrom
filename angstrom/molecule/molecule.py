@@ -228,7 +228,7 @@ class Molecule:
             Modifies 'coordinates' attribute of the Molecule object by calling the 'translate' method.
 
         """
-        current_center = self.get_center()
+        current_center = self.get_center(mass=mass)
         center_vector = np.array(coor) - current_center
         self.translate(center_vector)
 
