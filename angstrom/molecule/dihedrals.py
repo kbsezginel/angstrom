@@ -1,6 +1,6 @@
 """
 --- Ångström ---
-Molecular angle determination and calculation for Ångström Python package.
+Molecular dihedral determination and calculation for Ångström Python package.
 """
 
 def get_dihedrals(bonds):

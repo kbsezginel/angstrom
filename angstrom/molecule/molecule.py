@@ -7,6 +7,7 @@ from .write import write_molecule
 from .bonds import get_bonds
 from .angles import get_angles
 from .dihedrals import get_dihedrals
+from .impropers import get_impropers
 from .cell import Cell
 from angstrom.geometry import get_molecule_center, align_vectors
 from angstrom.geometry.quaternion import Quaternion
@@ -159,6 +160,23 @@ class Molecule:
         if not hasattr(self, 'bonds'):
             self.get_bonds()
         self.dihedrals = get_dihedrals(self.bonds)
+
+    def get_impropers(self):
+        """
+        Iterate over angles to get impropers.
+        """
+        if not hasattr(self, 'bonds'):
+            self.get_bonds()
+        self.impropers = get_impropers(self.bonds)
+
+    def get_topology(self):
+        """
+        Estimate molecular topology (bonds, angles, dihedrals, and impropers).
+        """
+        self.get_bonds()
+        self.get_angles()
+        self.get_dihedrals()
+        self.get_impropers()
 
     def get_molecular_weight(self):
         """
