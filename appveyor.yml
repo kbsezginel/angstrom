@@ -21,7 +21,6 @@ install:
 
     # Try to update conda first to avoid odd dependency clashes
   - conda update conda
-  - conda install conda-build
 
     # Create test environment for package
   - conda create -n angstrom_env python=%PYTHON_VERSION% pip pytest pytest-cov numpy
