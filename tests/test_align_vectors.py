@@ -4,7 +4,6 @@ Tests aligning vectors.
 """
 from angstrom.geometry import align_vectors
 import numpy as np
-import pytest
 
 
 def test_x_and_y_unit_vectors_alignment():
@@ -32,6 +31,5 @@ def test_aligning_parallel_vectors_should_raise_warning_and_give_zero_degrees():
     """ Tests aligning parallel vectors which should return an angle of 0 radians """
     v1, v2 = np.array([1, 1, 1]), np.array([-2, -2, -2])
     alignment = align_vectors(v1, v2)
-    pytest.warns(RuntimeWarning, "align_vectors(v1, v2)")
     assert np.allclose(alignment['axis'], [0, 0, 0])
     assert np.isclose(alignment['angle'], 0)
