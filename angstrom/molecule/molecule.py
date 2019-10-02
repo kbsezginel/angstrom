@@ -5,11 +5,15 @@ Molecule class for Ångström Python package.
 from .read import read_xyz
 from .write import write_molecule
 from .bonds import get_bonds
+from .angles import get_angles
+from .dihedrals import get_dihedrals
+from .impropers import get_impropers
 from .cell import Cell
 from angstrom.geometry import get_molecule_center, align_vectors
 from angstrom.geometry.quaternion import Quaternion
 from angstrom.geometry.plane import Plane
 import os
+import logging
 import numpy as np
 import periodictable
 
@@ -70,6 +74,22 @@ class Molecule:
         new_mol.name = '%s+%s' % (self.name, mol.name)
         return new_mol
 
+    def delete(self, atom_ids):
+        """
+        Delete a list of atoms with given indices.
+
+        Parameters
+        ----------
+        atom_ids : list
+            List of atom indices to delete.
+
+        """
+        if all([i < len(self.atoms) for i in atom_ids]) and all([i >= 0 for i in atom_ids]):
+            self.atoms = np.delete(self.atoms, atom_ids)
+            self.coordinates = np.delete(self.coordinates, atom_ids, axis=0)
+        else:
+            logging.error('Atom ids out of bounds, skipping deletion.')
+
     def read(self, filename):
         """
         Read molecule file.
@@ -122,18 +142,41 @@ class Molecule:
     def get_bonds(self):
         """
         Estimate molecular bonding.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
-            Assigns 'bonds' attribute.
-
         """
         self.bonds = get_bonds(self.atoms, self.coordinates)
+
+    def get_angles(self):
+        """
+        Iterate over bonds to get angles.
+        """
+        if not hasattr(self, 'bonds'):
+            self.get_bonds()
+        self.angles = get_angles(self.bonds)
+
+    def get_dihedrals(self):
+        """
+        Iterate over bonds to get dihedrals.
+        """
+        if not hasattr(self, 'bonds'):
+            self.get_bonds()
+        self.dihedrals = get_dihedrals(self.bonds)
+
+    def get_impropers(self):
+        """
+        Iterate over angles to get impropers.
+        """
+        if not hasattr(self, 'bonds'):
+            self.get_bonds()
+        self.impropers = get_impropers(self.bonds)
+
+    def get_topology(self):
+        """
+        Estimate molecular topology (bonds, angles, dihedrals, and impropers).
+        """
+        self.get_bonds()
+        self.get_angles()
+        self.get_dihedrals()
+        self.get_impropers()
 
     def get_molecular_weight(self):
         """
@@ -185,7 +228,7 @@ class Molecule:
             Modifies 'coordinates' attribute of the Molecule object by calling the 'translate' method.
 
         """
-        current_center = self.get_center()
+        current_center = self.get_center(mass=mass)
         center_vector = np.array(coor) - current_center
         self.translate(center_vector)
 
