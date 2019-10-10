@@ -5,6 +5,26 @@ Render image of a molecule file using Blender.
 import pickle
 import bpy
 import sys
+import numpy as np
+
+
+def cylinder_between(pos1, pos2, radius=0.1, color=(0, 0, 0)):
+    """ Add cylinder mesh between two given points with a given radius. """
+    dv = pos2 - pos1
+    dist = np.linalg.norm(dv)
+    bpy.ops.mesh.primitive_cylinder_add(
+        radius=radius,
+        depth=dist,
+        location=dv / 2 + pos1
+    )
+    activeObject = bpy.context.active_object   # Set active object to variable
+    mat = bpy.data.materials.new(name="cell")  # Set new material to variable
+    mat.diffuse_color = color                  # Set material color
+    activeObject.data.materials.append(mat)    # Add the material to the object
+    phi = np.arctan2(dv[1], dv[0])
+    theta = np.arccos(dv[2] / dist)
+    bpy.context.object.rotation_euler[1] = theta
+    bpy.context.object.rotation_euler[2] = phi
 
 
 def render_pdb(settings):
@@ -41,10 +61,15 @@ def render_pdb(settings):
     #     Item.raytrace_mirror.use = True
     #     Item.raytrace_mirror.reflect_factor = 0.1
 
+    if settings['cell'] is not None:
+        for edge in settings['cell']:
+            cylinder_between(np.array(edge[0]), np.array(edge[1]))
+
     # Move Camera and set rotation to normal
     bpy.data.objects['Camera'].location = settings['camera']['location']
     bpy.data.objects['Camera'].rotation_euler = settings['camera']['rotation']
     bpy.data.objects['Camera'].data.type = settings['camera']['type']
+    bpy.data.objects['Camera'].data.clip_end = 500
     if settings['camera']['type'] == 'ORTHO':
         bpy.data.objects['Camera'].data.ortho_scale = settings['camera']['zoom']
     elif settings['camera']['type'] == 'PERSP':

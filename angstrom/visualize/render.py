@@ -137,8 +137,9 @@ def render_video(trajectory, vid_file, renderer, verbose=False):
                            executable=renderer.config['executable'], background_color=(1, 1, 1))
         print('Rendering %s video with Blender -> %s' % (trajectory.name, vid_file))
         renderer.run()
-        # Remove all images
-        for img in images:
-            if os.path.exists(img):
-                os.remove(img)
+        if renderer.config['remove_images']:
+            # Remove all images
+            for img in images:
+                if os.path.exists(img):
+                    os.remove(img)
         renderer.configure()

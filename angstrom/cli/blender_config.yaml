@@ -4,9 +4,10 @@ vid_file: ''                     # Video file name
 vid_format: 'AVI_JPEG'           # Video file format
 images: []                       # List of images for video sequencer (video only)
 fps: 10                          # Frame per second (for video only)
-script: 'img'                    # Script type ('img' | 'vid')
+script: 'img'                    # Script type ('img' | 'seq')
 render: true                     # Render image
 save: ''                         # Save .blend file as (empty for not saving)
+remove_images: true              # Remove snapshots for the video
 background_color: null           # Background color in RGB (null for transparent)
 resolution: [1920, 1080]         # Image resolution
 brightness: 1.0                  # Environmental lightning
@@ -14,6 +15,7 @@ lamp: 2.0                        # Lamp brightness
 verbose: true                    # Verbosity of Blender
 pickle: 'temp-config.pkl'        # Temporary pickle file
 executable: 'blender'            # Blender executable (see documentation for setup)
+cell: null                       # Display unit cell (ex: [a, b, c, alpha, beta, gamma])
 camera:
   location: [0, 0, 10]           # Camera location (x, y, z)
   rotation: [0, 0, 0]            # Camera rotation in degrees

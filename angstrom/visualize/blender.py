@@ -90,9 +90,9 @@ class Blender:
 
     def configure(self, mol_file='', img_file='', img_format='PNG',
                   images=[], vid_file='', vid_format='AVI_JPEG', fps=10,
-                  script='img', render=True, save='',
+                  script='img', render=True, save='', remove_images=True,
                   model='default', colors=COLORS, background_color=None,
-                  resolution=(1920, 1080), brightness=1.0, lamp=2.0,
+                  resolution=(1920, 1080), brightness=1.0, lamp=2.0, cell=None,
                   camera_zoom=20, camera_distance=10, camera_view='xy', camera_type='ORTHO',
                   verbose=False, pickle='temp-config.pkl', executable='blender'):
         """
@@ -163,8 +163,8 @@ class Blender:
                 'zx': dict(location=[0, d, 0], rotation=[PI / 2, -PI / 2, PI]),
                 'zy': dict(location=[-d, 0, 0], rotation=[PI / 2, -PI / 2, -PI / 2])}
 
-        config = {'pdb': {**{'filepath': mol_file}, **self.models[model]},
-                  'img_file': img_file, 'img_format': img_format,
+        config = {'pdb': {**{'filepath': mol_file}, **self.models[model]}, 'cell': cell,
+                  'img_file': img_file, 'img_format': img_format, 'remove_images': remove_images,
                   'vid_file': vid_file, 'vid_format': vid_format, 'images': images, 'fps': fps,
                   'camera': dict(location=VIEW[camera_view]['location'],
                                  rotation=VIEW[camera_view]['rotation'],
