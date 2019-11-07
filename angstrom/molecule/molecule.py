@@ -194,6 +194,23 @@ class Molecule:
         """
         return sum([periodictable.elements.symbol(atom).mass for atom in self.atoms])
 
+    def get_chemical_formula(self):
+        """
+        Get chemical formula of the molecule.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        dict
+            Chemical formula with elements as keys and counts as values.
+
+        """
+        atoms, counts = np.unique(self.atoms, return_counts=True)
+        return dict(zip(atoms, counts))
+
     def get_center(self, mass=True):
         """
         Get coordinates for molecule center.
