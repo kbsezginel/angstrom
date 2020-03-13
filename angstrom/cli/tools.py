@@ -42,4 +42,7 @@ def search_blender_executable():
     for path in blender_paths:
         if shutil.which(path) is not None:
             exe = path
-    return exe
+            return exe
+    if exe is None:
+        raise Exception('ERROR: Blender executable not found, please see\
+ https://kbsezginel.github.io/angstrom/visualization#blender for more information')
