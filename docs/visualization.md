@@ -11,13 +11,13 @@ Currently, only images can be rendered using Blender and OpenBabel and nglview i
 
 Command-line interface
 ----------------------
-Ångström comes with a command-line interface (`ngstrom-vis`) which you can use to visualize molecules:
+Ångström comes with a command-line interface (`angstrom`) which you can use to visualize molecules:
 ```
-angstrom-vis tests/C60.pdb
+angstrom tests/C60.pdb
 ```
 To see options:
 ```
-angstrom-vis --help
+angstrom --help
 ```
 
 Library usage
