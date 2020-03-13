@@ -45,8 +45,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'angstrom-vis=angstrom.cli.angstrom_vis:main',
-            'angstrom-vid=angstrom.cli.angstrom_vid:main',
+            'angstrom=angstrom.cli.angstrom:main'
         ]
     }
 )
