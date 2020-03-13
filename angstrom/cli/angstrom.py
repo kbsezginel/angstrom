@@ -103,6 +103,7 @@ def main():
     blend.config['pdb']['use_center'] = (not args.no_center)
     blend.print_config()
     if args.video:
+        blend.config['pdb']['use_center'] = False
         if len(args.rotate) == 5:
             mol = Molecule(read=args.molecule)
             rot_axis = ([0, 0, 0], args.rotate[1:4])
