@@ -44,4 +44,4 @@ and visualizing molecules using Ångström.
 ## Tests
 Unit tests are available using [pytest](https://docs.pytest.org/en/latest/).
 You can run the tests by executing `pytest` in the main repository.
-There will be warnings but if you would like to suppress warnings messages you can use `pytest --disable-pytest-warnings`.
+There will be warnings and that's expected but if you would like to suppress them you can use `pytest --disable-pytest-warnings`.

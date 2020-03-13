@@ -41,15 +41,18 @@ Blender
 -------
 
 ### Setup
-Make sure you install [Blender](https://www.blender.org/) first.
-To use Blender with Ångström you need to make sure the `blender` executable is accessible through Python
-[subprocess library](https://docs.python.org/3/library/subprocess.html).
-Using Linux `blender` executable is added to PATH with installation both in Windows or Mac this might not be the case.
-Make sure you can run blender from the command line.
-([This documentation might help.](https://docs.blender.org/manual/en/dev/render/workflows/command_line.html))
+Make sure you install [Blender 2.8](https://www.blender.org/) first.
+Ångström requires Blender 2.8 or higher.
+To use Blender with Ångström you need to make sure the `blender` executable is accessible.
+For Linux `blender` executable is added to PATH after installation, however in Windows or Mac this might not be the case.
+Ångström attempts to find the executable in possible locations, however if this does not work look [here](https://docs.blender.org/manual/en/dev/render/workflows/command_line.html) to figure out where you can find the blender executable.
 
-After you locate the `blender` executable make sure it is defined correctly in the settings. By default if you can render images using Blender and Ångström than the executable is working.
-If not you can setup the executable as follows:
+After you locate the `blender` executable you can provide it to the command line interface as follows:
+```
+angstrom molecule.pdb -exe /path/to/blender
+```
+
+You can also setup the executable as follows:
 ```python
 from angstrom.visualize.blender import Blender
 
@@ -62,13 +65,8 @@ blend.config['executable'] = './blender.app/Contents/MacOS/blender'
 blend.config['executable'] = 'C:\\Program Files\\Blender Foundation\\Blender\\blender.exe'
 ```
 
-If you want to permanently change the executable then you can modify the source code.
-Go to `angstrom/visualize/blender.py` and change the `executable` keyword argument of the configure method.
-
-Blender is run from the command line using the following line:
-```
-blender --background --python myscript.py
-```
+If you want to permanently add the executable then you can modify the source code.
+Go to `angstrom/cli/tools.py` and add your executable to the `blender_paths` list.
 
 ### Usage and customization
 
