@@ -37,8 +37,8 @@ python setup.py install
 Ångström documentation is available on [readthedocs](https://angstrom.readthedocs.io/en/latest/).
 
 ### Visualization
-In order to make sure all visualization features are avaiable you need to install additional software.
-Take a look at [visualization](visualization) page to read more about installation and usage of these software
+In order to make sure all visualization features are available you need to install additional software.
+Take a look at [visualization](https://kbsezginel.github.io/angstrom/visualization) page to read more about installation and usage of these software
 and visualizing molecules using Ångström.
 
 ## Tests
