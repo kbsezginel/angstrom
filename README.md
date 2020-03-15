@@ -37,11 +37,11 @@ python setup.py install
 Ångström documentation is available on [readthedocs](https://angstrom.readthedocs.io/en/latest/).
 
 ### Visualization
-In order to make sure all visualization features are avaiable you need to install additional software.
-Take a look at [visualization](visualization) page to read more about installation and usage of these software
+In order to make sure all visualization features are available you need to install additional software.
+Take a look at [visualization](https://kbsezginel.github.io/angstrom/visualization) page to read more about installation and usage of these software
 and visualizing molecules using Ångström.
 
 ## Tests
 Unit tests are available using [pytest](https://docs.pytest.org/en/latest/).
 You can run the tests by executing `pytest` in the main repository.
-There will be warnings but if you would like to suppress warnings messages you can use `pytest --disable-pytest-warnings`.
+There will be warnings and that's expected but if you would like to suppress them you can use `pytest --disable-pytest-warnings`.

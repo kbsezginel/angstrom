@@ -50,9 +50,9 @@ def render_pdb(settings):
     elif settings['camera']['type'] == 'PERSP':
         bpy.data.objects['Camera'].data.lens = settings['camera']['zoom']
 
-    bpy.data.objects['Lamp'].location = settings['camera']['location']
-    bpy.data.objects['Lamp'].rotation_euler = [0, 0, 0]
-    bpy.data.objects['Lamp'].data.energy = settings['lamp']
+    bpy.data.objects['Light'].location = settings['camera']['location']
+    bpy.data.objects['Light'].rotation_euler = [0, 0, 0]
+    bpy.data.objects['Light'].data.energy = settings['light']
 
     # Set render x resolution lower (compress screen in x direction)
     bpy.context.scene.render.resolution_x = settings['resolution'][0]
@@ -61,14 +61,11 @@ def render_pdb(settings):
 
     # Set sky/background
     if settings['background_color'] is None:
-        bpy.context.scene.render.alpha_mode = 'TRANSPARENT'
-    elif len(settings['background_color']) == 3:
-        bpy.context.scene.render.alpha_mode = 'SKY'
-        bpy.context.scene.world.horizon_color = settings['background_color']
+        bpy.context.scene.render.film_transparent = True
+    elif len(settings['background_color']) == 4:
+        bpy.context.scene.render.film_transparent = False
+        bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[0].default_value = settings['background_color']
 
-    # Turn on environmental lighting
-    bpy.context.scene.world.light_settings.use_environment_light = True
-    bpy.context.scene.world.light_settings.environment_energy = settings['brightness']
     # Save .blend file
     if settings['save'] != '':
         bpy.ops.wm.save_as_mainfile(filepath=settings['save'])
