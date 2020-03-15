@@ -15,7 +15,7 @@ SEQ_SCRIPT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'blender_s
 
 default_model = {'use_center': True,               # Position object to origin
                  'use_camera': False,              # Add camera
-                 'use_lamp': False,                # Add lamp
+                 'use_light': False,               # Use light
                  'ball': '0',                      # Type of ball -> 0: NURBS | 1: Mesh | 2: Meta
                  'mesh_azimuth': 32,               # Number of sectors (azimuth)
                  'mesh_zenith': 32,                # Number of sectors (zenith)
@@ -62,10 +62,10 @@ MODELS = {'default': default_model,
           'surface': surface_model
           }
 
-COLORS = {'Carbon': (0.05, 0.05, 0.05),
-          'Hydrogen': (1.00, 1.00, 1.00),
-          'Nitrogen': (0.18, 0.34, 0.95),
-          'Oxygen': (0.70, 0.00, 0.00)
+COLORS = {'Carbon': (0.05, 0.05, 0.05, 1.00),
+          'Hydrogen': (1.00, 1.00, 1.00, 1.00),
+          'Nitrogen': (0.18, 0.34, 0.95, 1.00),
+          'Oxygen': (0.70, 0.00, 0.00, 1.00)
           }
 
 SCRIPTS = {'img': IMG_SCRIPT, 'seq': SEQ_SCRIPT}
@@ -92,7 +92,7 @@ class Blender:
                   images=[], vid_file='', vid_format='AVI_JPEG', fps=10,
                   script='img', render=True, save='',
                   model='default', colors=COLORS, background_color=None,
-                  resolution=(1920, 1080), brightness=1.0, lamp=2.0,
+                  resolution=(1920, 1080), light=2000.0,
                   camera_zoom=20, camera_distance=10, camera_view='xy', camera_type='ORTHO',
                   verbose=False, pickle='temp-config.pkl', executable='blender'):
         """
@@ -130,10 +130,8 @@ class Blender:
             Background color in RGB (0 - 1) | ex: (1.0, 1.0, 1.0) for white. None for transparent.
         resolution : tuple
             Image resolution (default: 1920 x 1080).
-        brightness : float
-            Brightness [environment lightning] (default: 1.0).
-        lamp : float
-            Lamp strength (default: 2).
+        light : float
+            Light energy (default: 2000 W).
         camera_zoom : float
             Camera zoom / focal length (default: 20).
         camera_distance : float
@@ -169,7 +167,7 @@ class Blender:
                   'camera': dict(location=VIEW[camera_view]['location'],
                                  rotation=VIEW[camera_view]['rotation'],
                                  type=camera_type, zoom=camera_zoom),
-                  'brightness': brightness, 'lamp': lamp, 'resolution': resolution,
+                  'light': light, 'resolution': resolution,
                   'colors': colors, 'background_color': background_color,
                   'verbose': verbose, 'render': render, 'save': save,
                   'executable': executable, 'script': SCRIPTS[script], 'pickle': pickle}
