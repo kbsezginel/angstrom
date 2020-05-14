@@ -106,6 +106,27 @@ class Trajectory:
         self.current_frame += 1
         return next_mol
 
+    def append(self, mol):
+        """
+        Append molecule to trajectory.
+        The number of atoms in the molecule must match that of the trajectory.
+
+        Parameters
+        ----------
+        mol : Molecule
+            Molecule object to be added
+
+        Returns
+        -------
+        None
+            Added to Trajectory object.
+
+        """
+        if len(mol.atoms) != self.atoms.shape[1]:
+            raise Exception('Trajectory cannot have different number of atoms per frame')
+        self.atoms = np.append(self.atoms, [mol.atoms], axis=0)
+        self.coordinates = np.append(self.coordinates, [mol.coordinates], axis=0)
+
     def read(self, filename):
         """
         Read xyz formatted trajectory file.
