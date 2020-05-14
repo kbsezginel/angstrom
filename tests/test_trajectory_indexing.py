@@ -28,3 +28,21 @@ def test_trajectory_indexing_center_of_mass():
     benzene_coms = benzene_traj.get_center()
     for frame_idx, benzene_frame in enumerate(benzene_traj):
         assert np.allclose(benzene_traj[frame_idx].get_center(), benzene_coms[frame_idx])
+
+
+def test_trajectory_slicing_with_random_integers():
+    """Tests Trajectory sllicing."""
+    benzene_traj = Trajectory(read=benzene_traj_x)
+    n_atoms = len(benzene_traj)
+    # Try 5 random slicing
+    for i in range(5):
+        start = np.random.randint(n_atoms)
+        stop = np.random.randint(n_atoms)
+        step = np.random.randint(n_atoms)
+        benzene_slice = benzene_traj[start:stop:step]
+        indices = range(start, stop, step)
+        assert len(indices) == len(benzene_slice)
+        if len(indices) == 0:
+            assert type(benzene_slice) == list
+        else:
+            assert type(benzene_slice) == Trajectory
