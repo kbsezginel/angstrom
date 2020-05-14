@@ -74,6 +74,13 @@ class Molecule:
         new_mol.name = '%s+%s' % (self.name, mol.name)
         return new_mol
 
+    def __len__(self):
+        """
+        Returns number of atoms.
+
+        """
+        return len(self.atoms)
+
     def delete(self, atom_ids):
         """
         Delete a list of atoms with given indices.

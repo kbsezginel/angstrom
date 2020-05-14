@@ -20,6 +20,7 @@ benzene_coors = [[0.0000, 1.4027, 0.0000], [0.00000, 2.4903, 0.0000],
 def test_read_xyz_benzene_molecule():
     """Tests reading xyz formatted molecule file"""
     benzene = Molecule(read=benzene_xyz)
+    assert len(benzene) == 12
     assert len(benzene.atoms) == 12
     assert len(benzene.coordinates) == 12
     assert benzene.header == 'benzene'
