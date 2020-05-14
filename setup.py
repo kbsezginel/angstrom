@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="angstrom",
-    version="0.2.1",
+    version="0.2.2",
     description="Tools for basic molecular operations with minimal-dependency",
     author="Kutay B. Sezginel",
     author_email="kbs37@pitt.edu",

@@ -81,10 +81,22 @@ class Trajectory:
 
     def __getitem__(self, i):
         """
-        Indexing method. Returns a Molecule object for given index (frame).
+        Indexing method.
+        Returns a Molecule object for given index (frame).
+        Returns a Trajectory object if used as slicing.
 
         """
-        return Molecule(atoms=self.atoms[i], coordinates=self.coordinates[i])
+        if isinstance(i, slice):
+            indices = range(len(self))[i.start:i.stop:i.step]
+            if len(indices) == 0:
+                return []
+            else:
+                new_traj = Trajectory(molecule=self[indices[0]])
+                for j in indices[1:]:
+                    new_traj.append(self[j])
+                return new_traj
+        else:
+            return Molecule(atoms=self.atoms[i], coordinates=self.coordinates[i])
 
     def __iter__(self):
         """
@@ -105,6 +117,27 @@ class Trajectory:
         next_mol = self[self.current_frame]
         self.current_frame += 1
         return next_mol
+
+    def append(self, mol):
+        """
+        Append molecule to trajectory.
+        The number of atoms in the molecule must match that of the trajectory.
+
+        Parameters
+        ----------
+        mol : Molecule
+            Molecule object to be added
+
+        Returns
+        -------
+        None
+            Added to Trajectory object.
+
+        """
+        if len(mol.atoms) != self.atoms.shape[1]:
+            raise Exception('Trajectory cannot have different number of atoms per frame')
+        self.atoms = np.append(self.atoms, [mol.atoms], axis=0)
+        self.coordinates = np.append(self.coordinates, [mol.coordinates], axis=0)
 
     def read(self, filename):
         """

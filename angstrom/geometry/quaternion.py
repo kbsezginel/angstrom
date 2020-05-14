@@ -24,6 +24,9 @@ class Quaternion(object):
         self.x = param_list[1]
         self.y = param_list[2]
         self.z = param_list[3]
+        self.x_axis = [[0, 0, 0], [1, 0, 0]]
+        self.y_axis = [[0, 0, 0], [0, 1, 0]]
+        self.z_axis = [[0, 0, 0], [0, 0, 1]]
 
     def __repr__(self):
         return "<Quaternion object w:%s x:%s y:%s z:%s>" % (self.w, self.x, self.y, self.z)
@@ -131,8 +134,9 @@ class Quaternion(object):
         ----------
         rotation_point: list
             The point to rotate.
-        rotation_axis: tuple
+        rotation_axis: tuple or str
             Tuple of 3D points defining the axis of rotation.
+            If 'x', 'y', or 'z' is given primary axes are used.
         rotation_angle: float
             Rotation angle in radians.
 
@@ -149,6 +153,8 @@ class Quaternion(object):
         [2.1192250600275795, 2.2773560513200133, 5.890236840657188]
 
         """
+        if rotation_axis in ['x', 'y', 'z']:
+            rotation_axis = getattr(self, f"{rotation_axis}_axis")
         axis_point1, axis_point2 = rotation_axis
         i = axis_point2[0] - axis_point1[0]
         j = axis_point2[1] - axis_point1[1]
