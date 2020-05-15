@@ -38,7 +38,7 @@ def test_trajectory_slicing_with_random_integers():
     for i in range(5):
         start = np.random.randint(n_atoms)
         stop = np.random.randint(n_atoms)
-        step = np.random.randint(n_atoms)
+        step = np.random.randint(1, n_atoms)
         benzene_slice = benzene_traj[start:stop:step]
         indices = range(start, stop, step)
         assert len(indices) == len(benzene_slice)
